@@ -11,12 +11,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
     <link rel="stylesheet" href="./styles/base.css">
     <link rel="stylesheet" href="./styles/video.css">
+    <link rel="stylesheet" href="./styles/selfview.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="https://sdk-cdn.mypurecloud.com/javascript/latest/purecloud-platform-client-v2.min.js"></script>
     <script src="https://sdk-cdn.mypurecloud.com/client-apps/2.3.0/purecloud-client-app-sdk.js"></script>
-    <script src="./scripts/pexrtc.js"></script>
+    <script src="https://pexipdemo.com/static/webrtc/js/pexrtc.js"></script>
     <script type="module" src="./scripts/main.js"></script>
   </head>
   <body>
@@ -24,8 +25,12 @@
       <section class="section">
         <div class="container">
           <div style='overflow:auto' class="vidstage" id="viewport">
-            <video id="pexip-video-container" playsinline="playsinline" poster="./images/orange-circle-loader.gif" class="mediastream" muted autoplay="autoplay"/><br>
+            <video id="pexip-video-container" poster="./images/orange-circle-loader.gif" class="mediastream"  autoplay muted playsinline muted></video>
           </div>
+        </div>
+        <div id="pexip-selfview-container">
+          <video id="pexip-selfview" autoplay muted playsinline muted>
+          </video>
         </div>
       </section>      
     </div>
