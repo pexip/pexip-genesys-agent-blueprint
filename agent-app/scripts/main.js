@@ -22,12 +22,13 @@ let agent = null;
 const urlParams = new URLSearchParams(window.location.search);
 conversationId = urlParams.get('conversationid');
 
-const redirectUri = config.environment === 'development' ? 
-                      config.developmentUri : config.prodUri;
+const redirectUri = config.environment === 'development' ? config.developmentUri : config.prodUri;
+
+const oauthClientID = config.environment === 'development' ? config.genesys.devOauthClientID : config.genesys.prodOauthClientID;
 
 client.setEnvironment(config.genesys.region);
 client.loginImplicitGrant(
-    config.genesys.oauthClientID,
+  oauthClientID,
     redirectUri,
     { state: conversationId }
 )
