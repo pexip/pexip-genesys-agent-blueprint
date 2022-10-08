@@ -19,6 +19,7 @@ let clientApp = new ClientApp({
 let conversationId = '';
 let agent = null;
 let confAlias = '';
+var pexrtcWrapper;
 
 const urlParams = new URLSearchParams(window.location.search);
 conversationId = urlParams.get('conversationid');
@@ -51,7 +52,7 @@ client.loginImplicitGrant(
 
     let prefixedConfAlias = `${config.pexip.conferencePrefix}${confAlias}`;
 
-    let pexrtcWrapper = new PexRtcWrapper(videoElement, selfviewElement, confNode, prefixedConfAlias, displayName, pin);
+    pexrtcWrapper = new PexRtcWrapper(videoElement, selfviewElement, confNode, prefixedConfAlias, displayName, pin);
     pexrtcWrapper.makeCall().muteAudio();
 
 
@@ -62,23 +63,85 @@ client.loginImplicitGrant(
           `v2.users.${agent.id}.conversations.calls`,
           (callEvent) => {
             let agentParticipant = callEvent?.eventBody?.participants?.filter((p) => p.purpose == "agent")[0];
+
+            //Disconnected event
             if (agentParticipant?.state === "disconnected") {
               console.log("Agent has ended the call. Disconnecting all conference participants");
               pexrtcWrapper.disconnectAll();
             }
 
+            //Hold event
+            //ToDo Mute / Unmute cutomer video on hold
             if (agentParticipant?.held) {
-              console.log("Agent has hase set the call on hold. Mute the video");
+              onsole.log("Agent has set the call on hold. Mute the agent and the customer video");
               pexrtcWrapper.muteVideo();
-            }else{
+            } else {
               pexrtcWrapper.unMuteVideo();
             }
-            
+
           });
       });
+
+    getVideoDevices().then(videoDevices => {
+      let videodeviceSelection = document.getElementById('video-devices-selection');
+
+      //Add video devices to selection
+      videoDevices.forEach((device) => {
+        const deviceOption = document.createElement("option");
+
+        deviceOption.text = device.label;
+        deviceOption.value = device.deviceId;
+        videodeviceSelection.add(deviceOption);
+      })
+
+      //Add selection listener
+      videodeviceSelection.addEventListener('change', (event) => {
+        var selectedDeviceId = videodeviceSelection.value;
+       
+        //Set getUserMedia constrain for device id 
+        var specifiConstrain = {
+          video: { deviceId: { exact: selectedDeviceId } }
+        };
+
+        navigator.mediaDevices.getUserMedia(specifiConstrain).then(slectedCam => {
+          pexrtcWrapper.changeCam(slectedCam);
+        });
+
+      });
+
+    });;
 
     return pexrtcWrapper;
   }).then(data => {
     console.log('Finished Setup');
 
   }).catch(e => console.log(e));
+
+
+// An async function to get the video and audio devices
+async function getVideoDevices() {
+
+  let constraints = {
+    video: true,
+    audio: false,
+  };
+
+  const faceConstraint = {
+    facingMode: 'environment'
+  };
+
+  constraints.video = faceConstraint;
+
+  // Request permission to list devices
+  let test = await navigator.mediaDevices.getUserMedia(constraints);
+  // Enumerate the devices
+  let devices = await navigator.mediaDevices.enumerateDevices();
+
+  // Filter only video devices
+  var video_devices = devices.filter((d) => d.kind === 'videoinput');
+
+  // Set the Video Devices so we can show on the UI
+  return video_devices;
+}
+
+

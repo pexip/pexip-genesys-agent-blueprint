@@ -87,4 +87,21 @@ export class PexRtcWrapper {
     this.pexrtc.disconnectAll();
     return this;
   }
+
+  changeCam(mediaStream) {
+
+    if (window.stream) {
+      window.stream.getTracks().forEach(track => {
+        track.stop();
+      });
+    }
+    window.stream = mediaStream;
+
+    this.pexrtc.user_media_stream = mediaStream;
+
+    this.pexrtc.renegotiate();
+
+  }
+
+
 }
