@@ -73,7 +73,7 @@ client.loginImplicitGrant(
             //Hold event
             //ToDo Mute / Unmute cutomer video on hold
             if (agentParticipant?.held) {
-              onsole.log("Agent has set the call on hold. Mute the agent and the customer video");
+              console.log("Agent has set the call on hold. Mute the agent and the customer video");
               pexrtcWrapper.muteVideo();
             } else {
               pexrtcWrapper.unMuteVideo();
