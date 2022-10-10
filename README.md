@@ -12,3 +12,5 @@ Audio for the conference is still routed through Genesys (via SIP trunk), keepin
 
 ## Architecture Diagram
 ![](blueprint/images/01-Overview/01-Architecture-Diagram.png "High level architecture diagram illustrating how audio and video streams flow between Agents and Customers via Genesys and Pexip")
+
+Trigger
