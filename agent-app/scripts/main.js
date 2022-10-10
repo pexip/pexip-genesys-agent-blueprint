@@ -18,8 +18,6 @@ let clientApp = new ClientApp({
 
 let conversationId = '';
 let agent = null;
-let confAlias = '';
-var pexrtcWrapper;
 
 const urlParams = new URLSearchParams(window.location.search);
 conversationId = urlParams.get('conversationid');
@@ -27,6 +25,9 @@ conversationId = urlParams.get('conversationid');
 const redirectUri = config.environment === 'development' ? config.developmentUri : config.prodUri;
 
 const oauthClientID = config.environment === 'development' ? config.genesys.devOauthClientID : config.genesys.prodOauthClientID;
+
+document.getElementById(config.videoElementId).onclick = togglePresentationRemoteVideo
+document.getElementById(config.presentationElementId).onclick = togglePresentationRemoteVideo
 
 client.setEnvironment(config.genesys.region);
 client.loginImplicitGrant(
@@ -41,20 +42,20 @@ client.loginImplicitGrant(
     agent = currentUser;
     return conversationsApi.getConversation(conversationId);
   }).then((conversation) => {
-    let videoElement = document.getElementById(config.videoElementId);
-    let selfviewElement = document.getElementById(config.selfviewElement);
-    let confNode = config.pexip.conferenceNode;
-    let displayName = `Agent: ${agent.name}`;
-    let pin = config.pexip.conferencePin;
-    confAlias = conversation.participants?.filter((p) => p.purpose == "customer")[0]?.aniName;
+    const videoElement = document.getElementById(config.videoElementId);
+    const selfviewElement = document.getElementById(config.selfviewElementId);
+    const presentationElement = document.getElementById(config.presentationElementId);
+    const confNode = config.pexip.conferenceNode;
+    const displayName = `Agent: ${agent.name}`;
+    const pin = config.pexip.conferencePin;
+    const confAlias = conversation.participants?.filter((p) => p.purpose == "customer")[0]?.aniName;
 
     console.assert(confAlias, "Unable to determine the conference alias.");
 
-    let prefixedConfAlias = `${config.pexip.conferencePrefix}${confAlias}`;
+    const prefixedConfAlias = `${config.pexip.conferencePrefix}${confAlias}`;
 
-    pexrtcWrapper = new PexRtcWrapper(videoElement, selfviewElement, confNode, prefixedConfAlias, displayName, pin);
+    const pexrtcWrapper = new PexRtcWrapper(videoElement, selfviewElement, presentationElement, confNode, prefixedConfAlias, displayName, pin);
     pexrtcWrapper.makeCall().muteAudio();
-
 
     controller.createChannel()
       .then(_ => {
@@ -144,4 +145,11 @@ async function getVideoDevices() {
   return video_devices;
 }
 
-
+function togglePresentationRemoteVideo(event) {
+  event.target.classList.remove('secondary');
+  if (event.target.id == config.videoElementId) {
+    document.getElementById(config.presentationElementId).classList.add('secondary');
+  } else {
+    document.getElementById(config.videoElementId).classList.add('secondary');
+  }
+}

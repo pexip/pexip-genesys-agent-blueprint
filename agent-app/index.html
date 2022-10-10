@@ -1,46 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Pexip Video Chat</title>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pexip Video Chat</title>
 
-  <link rel="shortcut icon" href="./images/pexip-favicon.png">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
-  <link rel="stylesheet" href="./styles/base.css">
-  <link rel="stylesheet" href="./styles/video.css">
-  <link rel="stylesheet" href="./styles/selfview.css">
-  <link rel="stylesheet" href="./styles/videodevices.css">
+    <link rel="shortcut icon" href="./images/pexip-favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"-->
+    <link rel="stylesheet" href="./styles/base.css">
+    <link rel="stylesheet" href="./styles/video.css">
+    <link rel="stylesheet" href="./styles/selfview.css">
+    <link rel="stylesheet" href="./styles/presentation.css">
+    <link rel="stylesheet" href="./styles/videodevices.css">
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-  <script src="https://sdk-cdn.mypurecloud.com/javascript/latest/purecloud-platform-client-v2.min.js"></script>
-  <script src="https://sdk-cdn.mypurecloud.com/client-apps/2.3.0/purecloud-client-app-sdk.js"></script>
-  <script src="https://pexipdemo.com/static/webrtc/js/pexrtc.js"></script>
-  <script type="module" src="./scripts/main.js"></script>
-</head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script src="https://sdk-cdn.mypurecloud.com/javascript/latest/purecloud-platform-client-v2.min.js"></script>
+    <script src="https://sdk-cdn.mypurecloud.com/client-apps/2.3.0/purecloud-client-app-sdk.js"></script>
+    <script src="https://pexipdemo.com/static/webrtc/js/pexrtc.js"></script>
+    <script type="module" src="./scripts/main.js"></script>
+  </head>
 
-<body>
-  <div class="video-wrapper">
-    <section class="section">
+  <body>
+    <body>
       <div class="container">
-        <div style='overflow:auto' class="vidstage" id="viewport">
-          <video id="pexip-video-container" poster="./images/orange-circle-loader.gif" class="mediastream" autoplay
-            muted playsinline muted></video>
-        </div>
+        <video id="pexip-presentation-container" class="presentation" playsinline autoplay></video>
+        <video id="pexip-video-container" poster="./images/orange-circle-loader.gif" playsinline autoplay muted></video>
       </div>
-      <div id="pexip-selfview-container">
-        <video id="pexip-selfview" autoplay muted playsinline muted>
-        </video>
+      <video id="pexip-selfview" class="selfview" autoplay muted playsinline muted></video>
+      <div id="video-decvices-container" style="display:  none">
+        <label id="video-decvices-label" for="video-devices-selection">Choose a cam:</label>
+        <select id="video-devices-selection"> </select>
       </div>
-    </section>
-    <div id="video-decvices-container">
-      <label id="video-decvices-label" for="video-devices-selection">Choose a cam:</label>
-      <select id="video-devices-selection"> </select>
-    </div>
-</body>
+  </body>
 
 </html>

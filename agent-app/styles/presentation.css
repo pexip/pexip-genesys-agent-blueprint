@@ -1,0 +1,7 @@
+video.presentation {
+    display: none;
+}
+
+video.presentation.active {
+    display: flex;
+}
