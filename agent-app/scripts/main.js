@@ -19,12 +19,14 @@ let clientApp = new ClientApp({
 });
 
 let conversationId = '';
+let pin = '';
 let agent = null;
 let confAlias = '';
 var pexrtcWrapper;
 
 const urlParams = new URLSearchParams(window.location.search);
 conversationId = urlParams.get('conversationid');
+pin = urlParams.get('pin');
 
 const redirectUri = config.environment === 'development' ? config.developmentUri : config.prodUri;
 
@@ -34,10 +36,17 @@ client.setEnvironment(config.genesys.region);
 client.loginImplicitGrant(
   oauthClientID,
   redirectUri,
-  { state: conversationId }
+  //Add conversationId and pin to state to remember after redirect
+  { state: JSON.stringify({
+    conversationId: conversationId,
+    pin: pin
+})  }
 )
   .then(data => {
-    conversationId = data.state;
+    //Read conversationId and pin from state
+    let stateData = JSON.parse(data.state);
+    conversationId = stateData.conversationId;
+    pin = stateData.pin;
     return usersApi.getUsersMe();
   }).then(currentUser => {
     agent = currentUser;
@@ -47,7 +56,6 @@ client.loginImplicitGrant(
     let selfviewElement = document.getElementById(config.selfviewElement);
     let confNode = config.pexip.conferenceNode;
     let displayName = `Agent: ${agent.name}`;
-    let pin = config.pexip.conferencePin;
     confAlias = conversation.participants?.filter((p) => p.purpose == "customer")[0]?.aniName;
 
     console.assert(confAlias, "Unable to determine the conference alias.");
