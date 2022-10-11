@@ -1,6 +1,9 @@
-#pexip-selfview-container{
+video.selfview {
+    position: absolute;
     width: 25%;
-    top: 0;
-    position: fixed;
-    right: 0;
+    top: 16px;
+    right: 16px;
+    transform: rotateY(180deg);
+    min-width: 200px;
+    max-width: 300px;
 }

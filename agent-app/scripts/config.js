@@ -11,7 +11,8 @@ export default {
 
     // Id for the video DOM element. Only change this if you customize index.html.
     videoElementId: "pexip-video-container",
-    selfviewElement: "pexip-selfview",
+    selfviewElementId: "pexip-selfview",
+    presentationElementId: "pexip-presentation-container",
 
     genesys: {
         // Genesys Cloud region

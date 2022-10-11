@@ -1,7 +1,9 @@
 export class PexRtcWrapper {
-  constructor(videoElement, selfviewElement, confNode, confName, displayName, pin, bandwidth = "1264") {
+
+  constructor(videoElement, selfviewElement, presentationElement, confNode, confName, displayName, pin, bandwidth = "1264") {
     this.videoElement = videoElement;
     this.selfviewElement = selfviewElement
+    this.presentationElement = presentationElement;
     this.confNode = confNode;
     this.confName = confName;
     this.displayName = displayName;
@@ -57,6 +59,26 @@ export class PexRtcWrapper {
     window.close();
   }
 
+  _presentationHandler(setting, presenter, uuid) {
+    if (setting) {
+      this.pexrtc.getPresentation();
+    }
+  }
+
+  _presentationConnectedHandler(stream) {
+    if (typeof(MediaStream) !== "undefined" && stream instanceof MediaStream) {
+      this.presentationElement.srcObject = stream;
+    } else {
+      this.presentationElement.src = stream;
+    }
+    this.presentationElement.classList.add("active");
+    this.videoElement.classList.add("secondary");
+  }
+
+  _presentationDisconnectedHandler() {
+    this.presentationElement.classList.remove("active");
+    this.videoElement.classList.remove("secondary");
+  }
 
   attachEvents() {
     window.addEventListener('beforeunload', (...args) => this._hangupHandler(...args));
@@ -64,6 +86,9 @@ export class PexRtcWrapper {
     this.pexrtc.onError = (...args) => this._errorHandler(...args);
     this.pexrtc.onConnect = (...args) => this._connectHandler(...args);
     this.pexrtc.onDisconnect = (...args) => this._disconnectHandler(...args);
+    this.pexrtc.onPresentation = (...args) => this._presentationHandler(...args);
+    this.pexrtc.onPresentationConnected = (...args) => this._presentationConnectedHandler(...args);
+    this.pexrtc.onPresentationDisconnected = (...args) => this._presentationDisconnectedHandler(...args);
   }
 
   makeCall() {
