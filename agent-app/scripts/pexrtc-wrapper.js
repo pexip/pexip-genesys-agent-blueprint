@@ -10,6 +10,9 @@ export class PexRtcWrapper {
 
     this.pexrtc = new PexRTC();
 
+    //Disable audio layer
+    this.pexrtc.audio_source = false;
+
     this.attachEvents();
 
     console.debug(`Video Element: ${this.videoElement}`);
