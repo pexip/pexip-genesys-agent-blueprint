@@ -2,6 +2,8 @@ import controller from './notifications-controller.js';
 import config from './config.js';
 import { PexRtcWrapper } from './pexrtc-wrapper.js';
 
+loadPexRtc(config.pexip.conferenceNode);
+
 // Obtain a reference to the platformClient object
 const platformClient = require('platformClient');
 const client = platformClient.ApiClient.instance;
@@ -139,4 +141,10 @@ async function getVideoDevices() {
   return video_devices;
 }
 
+ function loadPexRtc(node){
+  var location =  document.getElementsByTagName('head')[0];
+  var scriptTag = document.createElement('script');
+  scriptTag.src = "https://" + node + "/static/webrtc/js/pexrtc.js";
+  location.appendChild(scriptTag);
+};
 
