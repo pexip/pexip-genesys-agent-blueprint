@@ -82,6 +82,8 @@ client.loginImplicitGrant(
           });
       });
 
+
+
     getVideoDevices().then(videoDevices => {
       let videodeviceSelection = document.getElementById('video-devices-selection');
 
@@ -97,7 +99,7 @@ client.loginImplicitGrant(
       //Add selection listener
       videodeviceSelection.addEventListener('change', (event) => {
         var selectedDeviceId = videodeviceSelection.value;
-       
+
         //Set getUserMedia constrain for device id 
         var specifiConstrain = {
           video: { deviceId: { exact: selectedDeviceId } }
@@ -126,17 +128,10 @@ async function getVideoDevices() {
     audio: false,
   };
 
-  const faceConstraint = {
-    facingMode: 'environment'
-  };
-
-  constraints.video = faceConstraint;
-
   // Request permission to list devices
   let test = await navigator.mediaDevices.getUserMedia(constraints);
   // Enumerate the devices
   let devices = await navigator.mediaDevices.enumerateDevices();
-
   // Filter only video devices
   var video_devices = devices.filter((d) => d.kind === 'videoinput');
 
