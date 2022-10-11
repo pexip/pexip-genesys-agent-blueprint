@@ -1,9 +1,10 @@
 export class PexRtcWrapper {
 
-  constructor(videoElement, selfviewElement, presentationElement, confNode, confName, displayName, pin, bandwidth = "1264") {
+  constructor(videoElement, selfviewElement, presentationElement, toolbar, confNode, confName, displayName, pin, bandwidth = "1264") {
     this.videoElement = videoElement;
     this.selfviewElement = selfviewElement
     this.presentationElement = presentationElement;
+    this.toolbar = toolbar;
     this.confNode = confNode;
     this.confName = confName;
     this.displayName = displayName;
@@ -14,6 +15,8 @@ export class PexRtcWrapper {
 
     //Disable audio layer
     this.pexrtc.audio_source = false;
+ 
+    this.isSharingScreen = false;
 
     this.attachEvents();
 
@@ -26,6 +29,8 @@ export class PexRtcWrapper {
     this.pexrtc.disconnect();
     this.videoElement.src = "";
     this.selfviewElement.src = "";
+    this.presentationElement.src = "";
+    this.toolbar.style.display = "none";
   }
 
   _setupHandler(videoUrl, pinStatus) {
@@ -45,6 +50,7 @@ export class PexRtcWrapper {
 
   _connectHandler(videoUrl) {
     this.videoElement.poster = "";
+    this.toolbar.style.display = 'flex';
     if (typeof (MediaStream) !== "undefined" && videoUrl instanceof MediaStream) {
       this.videoElement.srcObject = videoUrl;
     }
@@ -72,10 +78,34 @@ export class PexRtcWrapper {
       this.presentationElement.src = stream;
     }
     this.presentationElement.classList.add("active");
+    this.presentationElement.classList.remove("secondary");
     this.videoElement.classList.add("secondary");
   }
 
   _presentationDisconnectedHandler() {
+    if (!this.isSharingScreen) {
+      this.presentationElement.classList.remove("active");
+      this.presentationElement.classList.remove("secondary");
+      this.videoElement.classList.remove("secondary");
+    }
+  }
+
+  _screenshareConnectedHandler(stream) {
+    if (typeof(MediaStream) !== "undefined" && stream instanceof MediaStream) {
+      this.presentationElement.srcObject = stream;
+    } else {
+      this.presentationElement.src = stream;
+    }
+    this.isSharingScreen = true;
+    this.screenSharingButton.classList.add('enabled');
+    this.presentationElement.classList.add("active");
+    this.presentationElement.classList.add("secondary");
+    this.videoElement.classList.remove("secondary");
+  }
+
+  _screenshareStoppedHandler(reason) {
+    this.isSharingScreen = false;
+    this.screenSharingButton.classList.remove('enabled');
     this.presentationElement.classList.remove("active");
     this.videoElement.classList.remove("secondary");
   }
@@ -89,6 +119,8 @@ export class PexRtcWrapper {
     this.pexrtc.onPresentation = (...args) => this._presentationHandler(...args);
     this.pexrtc.onPresentationConnected = (...args) => this._presentationConnectedHandler(...args);
     this.pexrtc.onPresentationDisconnected = (...args) => this._presentationDisconnectedHandler(...args);
+    this.pexrtc.onScreenshareConnected = (...args) => this._screenshareConnectedHandler(...args);
+    this.pexrtc.onScreenshareStopped = (...args) => this._screenshareStoppedHandler(...args);
   }
 
   makeCall() {
@@ -146,7 +178,16 @@ export class PexRtcWrapper {
     else {
       participantList.forEach(participant => this.pexrtc.videoUnmuted(participant.uuid))
     }
+  }
 
+  toggleScreenSharing(screenSharingButton) {
+    this.screenSharingButton = screenSharingButton
+    if (this.isSharingScreen) {
+      this.pexrtc.present(null);
+    } else {
+      this.pexrtc.present('screen');
+    }
+    return this;
   }
 
 }

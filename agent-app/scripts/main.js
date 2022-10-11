@@ -30,8 +30,11 @@ const redirectUri = config.environment === 'development' ? config.developmentUri
 
 const oauthClientID = config.environment === 'development' ? config.genesys.devOauthClientID : config.genesys.prodOauthClientID;
 
+let pexrtcWrapper;
+
 document.getElementById(config.videoElementId).onclick = togglePresentationRemoteVideo
 document.getElementById(config.presentationElementId).onclick = togglePresentationRemoteVideo
+document.getElementById('screensharing-button').onclick = toggleScreenSharing
 
 client.setEnvironment(config.genesys.region);
 client.loginImplicitGrant(
@@ -56,16 +59,25 @@ client.loginImplicitGrant(
     const videoElement = document.getElementById(config.videoElementId);
     const selfviewElement = document.getElementById(config.selfviewElementId);
     const presentationElement = document.getElementById(config.presentationElementId);
+    const toolbar = document.getElementById('toolbar');
     const confNode = config.pexip.conferenceNode;
     const displayName = `Agent: ${agent.name}`;
-    const pin = config.pexip.conferencePin;
     const confAlias = conversation.participants?.filter((p) => p.purpose == "customer")[0]?.aniName;
 
     console.assert(confAlias, "Unable to determine the conference alias.");
 
     const prefixedConfAlias = `${config.pexip.conferencePrefix}${confAlias}`;
 
-    const pexrtcWrapper = new PexRtcWrapper(videoElement, selfviewElement, presentationElement, confNode, prefixedConfAlias, displayName, pin);
+    pexrtcWrapper = new PexRtcWrapper(
+      videoElement,
+      selfviewElement,
+      presentationElement,
+      toolbar,
+      confNode,
+      prefixedConfAlias,
+      displayName,
+      pin
+    );
     pexrtcWrapper.makeCall().muteAudio();
 
     controller.createChannel()
@@ -162,3 +174,8 @@ function loadPexRtc(node){
   scriptTag.src = "https://" + node + "/static/webrtc/js/pexrtc.js";
   location.appendChild(scriptTag);
 };
+
+function toggleScreenSharing(event) {
+  pexrtcWrapper.toggleScreenSharing(event.target);
+}
+
