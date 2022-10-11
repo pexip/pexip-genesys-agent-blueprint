@@ -2,6 +2,8 @@ import controller from './notifications-controller.js';
 import config from './config.js';
 import { PexRtcWrapper } from './pexrtc-wrapper.js';
 
+loadPexRtc(config.pexip.conferenceNode);
+
 // Obtain a reference to the platformClient object
 const platformClient = require('platformClient');
 const client = platformClient.ApiClient.instance;
@@ -17,10 +19,12 @@ let clientApp = new ClientApp({
 });
 
 let conversationId = '';
+let pin = '';
 let agent = null;
 
 const urlParams = new URLSearchParams(window.location.search);
 conversationId = urlParams.get('conversationid');
+pin = urlParams.get('pin');
 
 const redirectUri = config.environment === 'development' ? config.developmentUri : config.prodUri;
 
@@ -33,10 +37,17 @@ client.setEnvironment(config.genesys.region);
 client.loginImplicitGrant(
   oauthClientID,
   redirectUri,
-  { state: conversationId }
+  //Add conversationId and pin to state to remember after redirect
+  { state: JSON.stringify({
+    conversationId: conversationId,
+    pin: pin
+})  }
 )
   .then(data => {
-    conversationId = data.state;
+    //Read conversationId and pin from state
+    let stateData = JSON.parse(data.state);
+    conversationId = stateData.conversationId;
+    pin = stateData.pin;
     return usersApi.getUsersMe();
   }).then(currentUser => {
     agent = currentUser;
@@ -73,15 +84,13 @@ client.loginImplicitGrant(
 
             //Hold event
             //ToDo Mute / Unmute cutomer video on hold
-            if (agentParticipant?.held) {
               console.log("Agent has set the call on hold. Mute the agent and the customer video");
-              pexrtcWrapper.muteVideo();
-            } else {
-              pexrtcWrapper.unMuteVideo();
-            }
+              pexrtcWrapper.onHoldVideo(agentParticipant?.held);
 
           });
       });
+
+
 
     getVideoDevices().then(videoDevices => {
       let videodeviceSelection = document.getElementById('video-devices-selection');
@@ -98,7 +107,7 @@ client.loginImplicitGrant(
       //Add selection listener
       videodeviceSelection.addEventListener('change', (event) => {
         var selectedDeviceId = videodeviceSelection.value;
-       
+
         //Set getUserMedia constrain for device id 
         var specifiConstrain = {
           video: { deviceId: { exact: selectedDeviceId } }
@@ -127,17 +136,10 @@ async function getVideoDevices() {
     audio: false,
   };
 
-  const faceConstraint = {
-    facingMode: 'environment'
-  };
-
-  constraints.video = faceConstraint;
-
   // Request permission to list devices
   let test = await navigator.mediaDevices.getUserMedia(constraints);
   // Enumerate the devices
   let devices = await navigator.mediaDevices.enumerateDevices();
-
   // Filter only video devices
   var video_devices = devices.filter((d) => d.kind === 'videoinput');
 
@@ -153,3 +155,10 @@ function togglePresentationRemoteVideo(event) {
     document.getElementById(config.videoElementId).classList.add('secondary');
   }
 }
+
+function loadPexRtc(node){
+  var location =  document.getElementsByTagName('head')[0];
+  var scriptTag = document.createElement('script');
+  scriptTag.src = "https://" + node + "/static/webrtc/js/pexrtc.js";
+  location.appendChild(scriptTag);
+};

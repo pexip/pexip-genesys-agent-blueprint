@@ -12,6 +12,9 @@ export class PexRtcWrapper {
 
     this.pexrtc = new PexRTC();
 
+    //Disable audio layer
+    this.pexrtc.audio_source = false;
+
     this.attachEvents();
 
     console.debug(`Video Element: ${this.videoElement}`);
@@ -129,5 +132,21 @@ export class PexRtcWrapper {
 
   }
 
+  //Set the video to mute for all participants
+  onHoldVideo(onHold) {
+    let participantList = this.pexrtc.getRosterList();
+
+    //Mute current user video 
+    this.pexrtc.muteVideo(onHold)
+
+    //Mute other participants video
+    if (onHold) {
+      participantList.forEach(participant => this.pexrtc.videoMuted(participant.uuid))
+    }
+    else {
+      participantList.forEach(participant => this.pexrtc.videoUnmuted(participant.uuid))
+    }
+
+  }
 
 }
