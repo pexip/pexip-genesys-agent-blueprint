@@ -63,8 +63,6 @@ client.loginImplicitGrant(
     let prefixedConfAlias = `${config.pexip.conferencePrefix}${confAlias}`;
 
     pexrtcWrapper = new PexRtcWrapper(videoElement, selfviewElement, confNode, prefixedConfAlias, displayName, pin);
-    pexrtcWrapper.makeCall().muteAudio();
-
 
     controller.createChannel()
       .then(_ => {
@@ -81,8 +79,9 @@ client.loginImplicitGrant(
             }
 
             //Hold event
-             console.log("Agent has set the call on hold. Mute the agent and the customer video");
-             pexrtcWrapper.onHoldVideo(agentParticipant?.held);
+            //ToDo Mute / Unmute cutomer video on hold
+              console.log("Agent has set the call on hold. Mute the agent and the customer video");
+              pexrtcWrapper.onHoldVideo(agentParticipant?.held);
 
           });
       });
