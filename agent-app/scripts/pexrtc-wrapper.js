@@ -57,6 +57,7 @@ export class PexRtcWrapper {
     window.close();
   }
 
+
   attachEvents() {
     window.addEventListener('beforeunload', (...args) => this._hangupHandler(...args));
     this.pexrtc.onSetup = (...args) => this._setupHandler(...args);
@@ -106,5 +107,21 @@ export class PexRtcWrapper {
 
   }
 
+  //Set the video to mute for all participants
+  onHoldVideo(onHold) {
+    let participantList = this.pexrtc.getRosterList();
+
+    //Mute current user video 
+    this.pexrtc.muteVideo(onHold)
+
+    //Mute other participants video
+    if (onHold) {
+      participantList.forEach(participant => this.pexrtc.videoMuted(participant.uuid))
+    }
+    else {
+      participantList.forEach(participant => this.pexrtc.videoUnmuted(participant.uuid))
+    }
+
+  }
 
 }
