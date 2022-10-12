@@ -21,8 +21,6 @@ let clientApp = new ClientApp({
 let conversationId = '';
 let pin = '';
 let agent = null;
-let confAlias = '';
-var pexrtcWrapper;
 
 const urlParams = new URLSearchParams(window.location.search);
 conversationId = urlParams.get('conversationid');
@@ -32,15 +30,23 @@ const redirectUri = config.environment === 'development' ? config.developmentUri
 
 const oauthClientID = config.environment === 'development' ? config.genesys.devOauthClientID : config.genesys.prodOauthClientID;
 
+let pexrtcWrapper;
+
+document.getElementById(config.videoElementId).onclick = togglePresentationRemoteVideo
+document.getElementById(config.presentationElementId).onclick = togglePresentationRemoteVideo
+document.getElementById('screensharing-button').onclick = toggleScreenSharing
+
 client.setEnvironment(config.genesys.region);
 client.loginImplicitGrant(
   oauthClientID,
   redirectUri,
   //Add conversationId and pin to state to remember after redirect
-  { state: JSON.stringify({
-    conversationId: conversationId,
-    pin: pin
-})  }
+  {
+    state: JSON.stringify({
+      conversationId: conversationId,
+      pin: pin
+    })
+  }
 )
   .then(data => {
     //Read conversationId and pin from state
@@ -52,17 +58,32 @@ client.loginImplicitGrant(
     agent = currentUser;
     return conversationsApi.getConversation(conversationId);
   }).then((conversation) => {
-    let videoElement = document.getElementById(config.videoElementId);
-    let selfviewElement = document.getElementById(config.selfviewElement);
-    let confNode = config.pexip.conferenceNode;
-    let displayName = `Agent: ${agent.name}`;
-    confAlias = conversation.participants?.filter((p) => p.purpose == "customer")[0]?.aniName;
+
+    const videoElement = document.getElementById(config.videoElementId);
+    const selfviewElement = document.getElementById(config.selfviewElementId);
+    const presentationElement = document.getElementById(config.presentationElementId);
+    const toolbar = document.getElementById('toolbar');
+    const confNode = config.pexip.conferenceNode;
+    const displayName = `Agent: ${agent.name}`;
+    const confAlias = conversation.participants?.filter((p) => p.purpose == "customer")[0]?.aniName;
 
     console.assert(confAlias, "Unable to determine the conference alias.");
 
-    let prefixedConfAlias = `${config.pexip.conferencePrefix}${confAlias}`;
 
-    pexrtcWrapper = new PexRtcWrapper(videoElement, selfviewElement, confNode, prefixedConfAlias, displayName, pin);
+    const prefixedConfAlias = `${config.pexip.conferencePrefix}${confAlias}`;
+
+
+    pexrtcWrapper = new PexRtcWrapper(
+      videoElement,
+      selfviewElement,
+      presentationElement,
+      toolbar,
+      confNode,
+      prefixedConfAlias,
+      displayName,
+      pin
+    );
+
     pexrtcWrapper.makeCall();
 
     controller.createChannel()
@@ -80,9 +101,8 @@ client.loginImplicitGrant(
             }
 
             //Hold event
-            //ToDo Mute / Unmute cutomer video on hold
-              console.log("Agent has set the call on hold. Mute the agent and the customer video");
-              pexrtcWrapper.onHoldVideo(agentParticipant?.held);
+            console.log("Agent has set the call on hold. Mute the agent and the customer video");
+            pexrtcWrapper.onHoldVideo(agentParticipant?.held);
 
           });
       });
@@ -144,10 +164,24 @@ async function getVideoDevices() {
   return video_devices;
 }
 
- function loadPexRtc(node){
-  var location =  document.getElementsByTagName('head')[0];
+
+function togglePresentationRemoteVideo(event) {
+  event.target.classList.remove('secondary');
+  if (event.target.id == config.videoElementId) {
+    document.getElementById(config.presentationElementId).classList.add('secondary');
+  } else {
+    document.getElementById(config.videoElementId).classList.add('secondary');
+  }
+}
+
+function loadPexRtc(node) {
+  var location = document.getElementsByTagName('head')[0];
   var scriptTag = document.createElement('script');
   scriptTag.src = "https://" + node + "/static/webrtc/js/pexrtc.js";
   location.appendChild(scriptTag);
 };
+
+function toggleScreenSharing(event) {
+  pexrtcWrapper.toggleScreenSharing(event.target);
+}
 
