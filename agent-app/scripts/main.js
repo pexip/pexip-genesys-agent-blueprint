@@ -36,6 +36,10 @@ document.getElementById(config.videoElementId).onclick = togglePresentationRemot
 document.getElementById(config.presentationElementId).onclick = togglePresentationRemoteVideo
 document.getElementById('screensharing-button').onclick = toggleScreenSharing
 
+$(function() {
+  $( "#pexip-self-view-container" ).draggable({containment: "#dragzone", scroll: false});
+ });
+
 client.setEnvironment(config.genesys.region);
 client.loginImplicitGrant(
   oauthClientID,
