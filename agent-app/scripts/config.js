@@ -22,7 +22,7 @@ export default {
 
         // OAuth Client ID
         // Created in "Create a Token Implicit OAuth Grant for Genesys Cloud deployment" step
-        prodOauthClientID: '1111111a-1bc1-11bb-a1bb-1b1bb111ca11',
+        prodOauthClientID: 'bde46253-e5e1-43b4-bc8f-35711b3c41d1',
 
         //Token for localhost:8080 redirect in dev enviroments 
         devOauthClientID: 'bf17f613-7ec0-4c04-9a5f-0d138db0c334'
