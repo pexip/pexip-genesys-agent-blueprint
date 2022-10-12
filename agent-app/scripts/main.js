@@ -63,6 +63,7 @@ client.loginImplicitGrant(
     let prefixedConfAlias = `${config.pexip.conferencePrefix}${confAlias}`;
 
     pexrtcWrapper = new PexRtcWrapper(videoElement, selfviewElement, confNode, prefixedConfAlias, displayName, pin);
+    pexrtcWrapper.makeCall();
 
     controller.createChannel()
       .then(_ => {
