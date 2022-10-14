@@ -32,9 +32,8 @@ const oauthClientID = config.environment === 'development' ? config.genesys.devO
 
 let pexrtcWrapper;
 
-document.getElementById(config.videoElementId).onclick = togglePresentationRemoteVideo
-document.getElementById(config.presentationElementId).onclick = togglePresentationRemoteVideo
-document.getElementById('screensharing-button').onclick = toggleScreenSharing
+document.getElementById(config.videoElementId).onclick = togglePresentationRemoteVideo;
+document.getElementById(config.presentationElementId).onclick = togglePresentationRemoteVideo;
 
 //Draggable feature for selfview
 var selfviewContainer = $('#pexip-self-view-container');
@@ -176,8 +175,10 @@ client.loginImplicitGrant(
       displayName,
       pin
     );
-
-    pexrtcWrapper.makeCall();
+    
+    getLocalMediaStream().then( (localMediaStream) => {
+      pexrtcWrapper.makeCall(localMediaStream);
+    });
 
     controller.createChannel()
       .then(_ => {
@@ -203,31 +204,37 @@ client.loginImplicitGrant(
 
 
     getVideoDevices().then(videoDevices => {
-      let videodeviceSelection = document.getElementById('video-devices-selection');
+
+      const videoDeviceSelection = document.getElementById('video-devices-selection');
+
+      const selectedDeviceId = localStorage.getItem('settings.cameraDeviceId');
 
       //Add video devices to selection
       videoDevices.forEach((device) => {
-        const deviceOption = document.createElement("option");
 
+        const deviceOption = document.createElement("option");
         deviceOption.text = device.label;
         deviceOption.value = device.deviceId;
-        videodeviceSelection.add(deviceOption);
+        deviceOption.selected = device.deviceId === selectedDeviceId ? true : false;
+
+        videoDeviceSelection.add(deviceOption);
       })
 
-      //Add selection listener
-      videodeviceSelection.addEventListener('change', (event) => {
-        var selectedDeviceId = videodeviceSelection.value;
+      videoDeviceSelection.onchange = () => {
+        const selectedDeviceId = videoDeviceSelection.value;
 
         //Set getUserMedia constrain for device id 
-        var specifiConstrain = {
+        const constraints = {
           video: { deviceId: { exact: selectedDeviceId } }
         };
 
-        navigator.mediaDevices.getUserMedia(specifiConstrain).then(slectedCam => {
-          pexrtcWrapper.changeCam(slectedCam);
+        navigator.mediaDevices.getUserMedia(constraints).then(mediaStream => {
+          console.log('Change camera');
+          pexrtcWrapper.changeCam(mediaStream);
+          localStorage.setItem('settings.cameraDeviceId', selectedDeviceId);
         });
 
-      });
+      }
 
     });;
 
@@ -241,20 +248,35 @@ client.loginImplicitGrant(
 // An async function to get the video and audio devices
 async function getVideoDevices() {
 
-  let constraints = {
+  const constraints = {
     video: true,
     audio: false,
   };
 
   // Request permission to list devices
-  let test = await navigator.mediaDevices.getUserMedia(constraints);
+  await navigator.mediaDevices.getUserMedia(constraints);
   // Enumerate the devices
-  let devices = await navigator.mediaDevices.enumerateDevices();
+  const devices = await navigator.mediaDevices.enumerateDevices();
   // Filter only video devices
-  var video_devices = devices.filter((d) => d.kind === 'videoinput');
+  const video_devices = devices.filter((d) => d.kind === 'videoinput');
 
   // Set the Video Devices so we can show on the UI
   return video_devices;
+}
+
+async function getLocalMediaStream() {
+  const videoDevices = await getVideoDevices();
+  const selectedDeviceId = localStorage.getItem('settings.cameraDeviceId');
+  let device = videoDevices.find( (device) => device.deviceId === selectedDeviceId);
+  if (!device) {
+    device = videoDevices[0];
+  }
+  //Set getUserMedia constrain for device id 
+  const constraints = {
+    video: { deviceId: { exact: device.deviceId } }
+  };
+  const mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+  return mediaStream;
 }
 
 
@@ -274,7 +296,13 @@ function loadPexRtc(node) {
   location.appendChild(scriptTag);
 };
 
-function toggleScreenSharing(event) {
-  pexrtcWrapper.toggleScreenSharing(event.target);
+function toggleScreenSharing(buttonContainer) {
+  pexrtcWrapper.toggleScreenSharing(buttonContainer);
 }
 
+function toggleButtonDialog(buttonContainer) {
+  buttonContainer.classList.toggle('selected');
+}
+
+window.toggleScreenSharing = toggleScreenSharing
+window.toggleButtonDialog = toggleButtonDialog

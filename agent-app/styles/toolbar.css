@@ -1,3 +1,6 @@
+/**
+ * General Style
+ */
 .toolbar {
   position: absolute;
   display: none;
@@ -7,7 +10,15 @@
   padding: 16px;
 }
 
-.toolbar>button {
+
+/**
+ * Button
+ */
+.toolbar .button-container {
+  position: relative;
+}
+
+.toolbar button {
   position: relative;
   background-color: #111111a6;
   color: white;
@@ -19,18 +30,21 @@
   transition: background-color .3s ease;
 }
 
-.toolbar>button:hover, .toolbar>button.enabled {
+.toolbar button:hover, .toolbar .button-container.selected>button {
   background-color: #ffffffcc;
   color: #111111;
 }
 
-.toolbar>button>svg {
+.toolbar button>svg {
   width: 24px;
   height: 24px;
   pointer-events: none;
 }
 
-.toolbar>button>.tooltip {
+/**
+ * Tooltip
+ */
+.toolbar .button-container>.tooltip, .toolbar .button-container>.tooltip-enabled {
   display: none;
   position: absolute;
   bottom: calc(100% + 6px);
@@ -43,8 +57,60 @@
   color: #0a2136;
   white-space: nowrap;
   border-radius: 8px;
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
 }
 
-.toolbar>button:hover>.tooltip {
+.toolbar .button-container.selected:hover>.tooltip {
+  display: none;
+}
+
+.toolbar .button-container:hover>.tooltip, .toolbar .button-container.selected:hover>.tooltip-enabled {
   display: block;
+}
+
+
+/**
+ * Dialog
+ */
+.toolbar .dialog {
+  display: none;
+  position: absolute;
+  flex-direction: column;
+  bottom: calc(100% + 12px);
+  background: white;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 8px;
+  padding: 12px;
+  pointer-events: none;
+}
+
+.toolbar .dialog::before,
+.toolbar .dialog::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.toolbar .dialog::after {
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -12px;
+  border-left: 12px solid transparent;
+  border-top: 12px solid #fff;
+  border-right: 12px solid transparent;
+}
+
+.toolbar .button-container.selected>.dialog {
+  display: flex;
+}
+
+.toolbar .button-container.selected .close-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
