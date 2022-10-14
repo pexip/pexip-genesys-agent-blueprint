@@ -35,9 +35,98 @@ let pexrtcWrapper;
 document.getElementById(config.videoElementId).onclick = togglePresentationRemoteVideo;
 document.getElementById(config.presentationElementId).onclick = togglePresentationRemoteVideo;
 
-$(function() {
+//Draggable feature for selfview
+var selfviewContainer = $('#pexip-self-view-container');
+var dragzone = $('#dragzone');
+
+// Init Container width / height
+//sizeUP();
+//$(window).resize(sizeUP);
+// conPercent(); was here
+// Move conPercent here
+// This way we convert percent after the element is centered
+
+conPercent();
+
+$(selfviewContainer).draggable({
+  containment: dragzone, scroll: false,
+  stop: function () {
+    selfviewContainer.removeClass("upper-right-corner");
+    conPercent();
+    console.log(parseInt($(this).css("bottom")) / (dragzone.width() / 100) + "%");
+    console.log(parseInt($(this).css("right")) / (dragzone.height() / 100) + "%");
+  }
+});
+
+
+$(document).mouseleave(function () {
+  conPercent();
+});
+
+function conPercent() {
+
+  var containerWidth = parseInt(dragzone.innerWidth());
+
+  var selfViewLeft = parseInt(selfviewContainer.css("left"));
+  selfviewContainer.css('left', '');
+
+  var selfViewWidth = parseInt(selfviewContainer.css("width"));
+
+  var containerHeight = parseInt(dragzone.innerHeight());
+
+  var slefViewTop = parseInt(selfviewContainer.css("top"));
+  selfviewContainer.css('top', '');
+
+  var selfViewHeigth = parseInt(selfviewContainer.css("height"));
+
+  selfviewContainer.css("right", '');
+  selfviewContainer.css("bottom", '');
+
+  if ((selfViewLeft + (selfViewWidth / 2)) > containerWidth / 2) {
+
+    var selfViewRight = selfViewLeft + selfViewWidth;
+
+    var brightGap = containerWidth - selfViewRight;
+
+    var oLPer = (brightGap / containerWidth) * 100;
+    oLPer += "%";
+    selfviewContainer.css("right", oLPer);
+
+  } else {
+    var oLPer = (selfViewLeft / containerWidth) * 100;
+    oLPer += "%";
+    selfviewContainer.css("left", oLPer);
+  }
+
+
+  if ((slefViewTop + (selfViewHeigth / 2)) > containerHeight / 2) {
+    var selfviewBottom = slefViewTop + selfViewHeigth;
+
+    var bottomGap = containerHeight - selfviewBottom;
+
+    var oHPer = (bottomGap / containerHeight) * 100;
+    oHPer += "%";
+    selfviewContainer.css("bottom", oHPer);
+
+
+    console.log("left percent: " + oLPer);
+    console.log("top percent: " + oHPer);
+
+  } else {
+    var oHPer = (slefViewTop / containerHeight) * 100;
+    oHPer += "%";
+    selfviewContainer.css("top", oHPer);
+  }
+
+}
+
+
+
+
+/*  // Watch for resize
+$(window).resize(function() {       
   $( "#pexip-self-view-container" ).draggable({containment: "#dragzone", scroll: false});
- });
+}); */
 
 client.setEnvironment(config.genesys.region);
 client.loginImplicitGrant(

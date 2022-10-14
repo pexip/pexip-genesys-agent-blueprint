@@ -31,8 +31,8 @@
       <video id="pexip-presentation-container" class="presentation" playsinline autoplay></video>
       <video id="pexip-video-container" poster="./images/orange-circle-loader.gif" playsinline autoplay muted></video>
     </div>
-    <div id="pexip-self-view-container">
-      <video id="pexip-selfview" class="selfview" autoplay muted playsinline muted></video>
+    <div id="pexip-self-view-container" class="upper-right-corner">
+        <video id="pexip-selfview" class="selfview" autoplay muted playsinline muted></video>
     </div>
 
     <div id="toolbar" class="toolbar">
@@ -41,6 +41,15 @@
         <button onclick="toggleScreenSharing(this.closest('.button-container'))">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" data-token-name="IconPresentationOn_24" class="_small_x0ta1_20">
             <path d="M14.75 19h-5.5l-.726 2.177a.625.625 0 0 0 .593.823h5.766a.625.625 0 0 0 .593-.823L14.75 19ZM18.9 4H5.1a2.6 2.6 0 0 0-2.6 2.6v8.8A2.6 2.6 0 0 0 5.1 18h13.8a2.6 2.6 0 0 0 2.6-2.6V6.6A2.6 2.6 0 0 0 18.9 4ZM20 15.4a1.1 1.1 0 0 1-1.1 1.1H5.1A1.1 1.1 0 0 1 4 15.4V6.6a1.1 1.1 0 0 1 1.1-1.1h13.8A1.1 1.1 0 0 1 20 6.6v8.8ZM5.5 15h13V7h-13v8Z" fill="currentColor">
+   
+      <div id="toolbar" class="toolbar">
+        <button id="screensharing-button">
+          <span class="tooltip">Share screen</span>
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+            data-token-name="IconPresentationOn_24" class="_small_x0ta1_20">
+            <path
+              d="M14.75 19h-5.5l-.726 2.177a.625.625 0 0 0 .593.823h5.766a.625.625 0 0 0 .593-.823L14.75 19ZM18.9 4H5.1a2.6 2.6 0 0 0-2.6 2.6v8.8A2.6 2.6 0 0 0 5.1 18h13.8a2.6 2.6 0 0 0 2.6-2.6V6.6A2.6 2.6 0 0 0 18.9 4ZM20 15.4a1.1 1.1 0 0 1-1.1 1.1H5.1A1.1 1.1 0 0 1 4 15.4V6.6a1.1 1.1 0 0 1 1.1-1.1h13.8A1.1 1.1 0 0 1 20 6.6v8.8ZM5.5 15h13V7h-13v8Z"
+              fill="currentColor">
             </path>
           </svg>
         </button>
