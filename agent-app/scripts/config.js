@@ -1,6 +1,6 @@
 export default {
     // 'development' or 'production'
-    environment: 'development',
+    environment: 'production',
 
     // Using local test servers
     developmentUri: 'http://localhost:8080',
