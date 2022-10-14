@@ -1,0 +1,24 @@
+.settings>.select-container {
+    display: flex;
+    background-color: #f4f7fb;
+    border: 1px solid #d8e3ee;
+    border-radius: 4px;
+    padding: 4px;
+    pointer-events: initial;
+}
+  
+.settings>.select-container:hover {
+    background-color: #c1d1df;
+}
+  
+.settings>.select-container svg {
+    width: 24px;
+}
+  
+.settings>.select-container select {
+    background-color: transparent;
+    padding: 4px;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+}

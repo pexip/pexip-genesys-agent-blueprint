@@ -1,55 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Pexip Video Chat</title>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pexip Video Chat</title>
 
-  <link rel="shortcut icon" href="./images/pexip-favicon.png">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <!--link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"-->
-  <link rel="stylesheet" href="./styles/base.css">
-  <link rel="stylesheet" href="./styles/video.css">
-  <link rel="stylesheet" href="./styles/selfview.css">
-  <link rel="stylesheet" href="./styles/presentation.css">
-  <link rel="stylesheet" href="./styles/videodevices.css">
-  <link rel="stylesheet" href="./styles/toolbar.css">
+    <link rel="shortcut icon" href="./images/pexip-favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"-->
+    <link rel="stylesheet" href="./styles/base.css">
+    <link rel="stylesheet" href="./styles/video.css">
+    <link rel="stylesheet" href="./styles/selfview.css">
+    <link rel="stylesheet" href="./styles/presentation.css">
+    <link rel="stylesheet" href="./styles/toolbar.css">
+    <link rel="stylesheet" href="./styles/settings.css">
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-  <script src="https://sdk-cdn.mypurecloud.com/javascript/latest/purecloud-platform-client-v2.min.js"></script>
-  <script src="https://sdk-cdn.mypurecloud.com/client-apps/2.3.0/purecloud-client-app-sdk.js"></script>
-  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-  <script type="module" src="./scripts/main.js"></script>
-</head>
-
-<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script src="https://sdk-cdn.mypurecloud.com/javascript/latest/purecloud-platform-client-v2.min.js"></script>
+    <script src="https://sdk-cdn.mypurecloud.com/client-apps/2.3.0/purecloud-client-app-sdk.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script type="module" src="./scripts/main.js"></script>
+  </head>
 
   <body>
+
     <div id="dragzone" class="container">
       <video id="pexip-presentation-container" class="presentation" playsinline autoplay></video>
       <video id="pexip-video-container" poster="./images/orange-circle-loader.gif" playsinline autoplay muted></video>
-      <div id="pexip-self-view-container">
-        <video id="pexip-selfview" class="selfview" autoplay muted playsinline muted></video>
-      </div>
-      <div id="toolbar" class="toolbar">
-        <button id="screensharing-button">
-          <span class="tooltip">Share screen</span>
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
-            data-token-name="IconPresentationOn_24" class="_small_x0ta1_20">
-            <path
-              d="M14.75 19h-5.5l-.726 2.177a.625.625 0 0 0 .593.823h5.766a.625.625 0 0 0 .593-.823L14.75 19ZM18.9 4H5.1a2.6 2.6 0 0 0-2.6 2.6v8.8A2.6 2.6 0 0 0 5.1 18h13.8a2.6 2.6 0 0 0 2.6-2.6V6.6A2.6 2.6 0 0 0 18.9 4ZM20 15.4a1.1 1.1 0 0 1-1.1 1.1H5.1A1.1 1.1 0 0 1 4 15.4V6.6a1.1 1.1 0 0 1 1.1-1.1h13.8A1.1 1.1 0 0 1 20 6.6v8.8ZM5.5 15h13V7h-13v8Z"
-              fill="currentColor">
+    </div>
+    <div id="pexip-self-view-container">
+      <video id="pexip-selfview" class="selfview" autoplay muted playsinline muted></video>
+    </div>
+
+    <div id="toolbar" class="toolbar">
+
+      <div class="button-container">
+        <button onclick="toggleScreenSharing(this.closest('.button-container'))">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" data-token-name="IconPresentationOn_24" class="_small_x0ta1_20">
+            <path d="M14.75 19h-5.5l-.726 2.177a.625.625 0 0 0 .593.823h5.766a.625.625 0 0 0 .593-.823L14.75 19ZM18.9 4H5.1a2.6 2.6 0 0 0-2.6 2.6v8.8A2.6 2.6 0 0 0 5.1 18h13.8a2.6 2.6 0 0 0 2.6-2.6V6.6A2.6 2.6 0 0 0 18.9 4ZM20 15.4a1.1 1.1 0 0 1-1.1 1.1H5.1A1.1 1.1 0 0 1 4 15.4V6.6a1.1 1.1 0 0 1 1.1-1.1h13.8A1.1 1.1 0 0 1 20 6.6v8.8ZM5.5 15h13V7h-13v8Z" fill="currentColor">
             </path>
           </svg>
         </button>
-        <div id="video-decvices-container">
-          <label id="video-decvices-label" for="video-devices-selection">Choose a cam:</label>
-          <select id="video-devices-selection"> </select>
+        <span class="tooltip">Share screen</span>
+        <span class="tooltip-enabled">Stop sharing</span>
+      </div>
+
+      <div class="button-container">
+        <button id="settings-button" onclick="toggleButtonDialog(this.closest('.button-container'))">
+          <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" data-token-name="IconPresentationOn_24" class="_small_x0ta1_20">
+            <path d="m14.571 6.939-1.095-.156a1.114 1.114 0 0 1-.872-.681l-.005-.012a1.115 1.115 0 0 1 .134-1.101l.664-.885a.5.5 0 0 0-.046-.654l-.802-.8a.5.5 0 0 0-.654-.046l-.885.664a1.114 1.114 0 0 1-1.112.129 1.117 1.117 0 0 1-.68-.872l-.157-1.096A.5.5 0 0 0 8.566 1H7.434a.5.5 0 0 0-.495.429l-.157 1.096c-.056.391-.315.72-.68.872l-.012.004a1.115 1.115 0 0 1-1.101-.134l-.885-.664a.5.5 0 0 0-.653.047l-.801.801a.5.5 0 0 0-.047.653l.664.885c.238.318.287.735.134 1.101l-.004.012a1.117 1.117 0 0 1-.872.68l-1.096.157A.5.5 0 0 0 1 7.434v1.133a.5.5 0 0 0 .429.495l1.095.156a1.114 1.114 0 0 1 .877.692c.153.366.104.783-.134 1.101l-.664.885a.5.5 0 0 0 .046.654l.801.801a.5.5 0 0 0 .654.046l.885-.664a1.114 1.114 0 0 1 1.101-.134l.012.005c.365.151.625.481.681.872l.156 1.095a.5.5 0 0 0 .495.429h1.133a.5.5 0 0 0 .495-.429l.156-1.095c.056-.391.315-.721.681-.872l.012-.005a1.115 1.115 0 0 1 1.101.134l.885.664a.502.502 0 0 0 .654-.046l.801-.801a.5.5 0 0 0 .046-.654l-.664-.885A1.114 1.114 0 0 1 12.6 9.91l.005-.012c.151-.365.481-.625.872-.681l1.095-.156A.5.5 0 0 0 15 8.566V7.434a.5.5 0 0 0-.429-.495ZM8 10.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z" fill="currentColor"></path>            </path>
+          </svg>
+        </button>
+        <span class="tooltip">Change Settings</span>
+        <div class="close-overlay" onclick="toggleButtonDialog(this.closest('.button-container'))"></div>
+        <div id="settings-panel" class="dialog settings">
+          <div class="select-container">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" data-token-name="IconVideoOn_24" class="_small_x0ta1_20">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M5.65 7h8.75a2.5 2.5 0 0 1 2.5 2.5v5a2.5 2.5 0 0 1-2.5 2.5H5.65a2.5 2.5 0 0 1-2.5-2.5v-5A2.5 2.5 0 0 1 5.65 7Zm12.5 3.125 2.725-2.271a.625.625 0 0 1 1.025.48v7.332c0 .53-.618.819-1.025.48l-2.725-2.271v-3.75Z" fill="currentColor"></path>
+            </svg>
+            <select id="video-devices-selection"></select>
+          </div>
         </div>
       </div>
+    </div>
+
   </body>
 
 </html>

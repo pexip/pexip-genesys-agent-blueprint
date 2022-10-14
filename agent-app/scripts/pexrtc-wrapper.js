@@ -97,7 +97,7 @@ export class PexRtcWrapper {
       this.presentationElement.src = stream;
     }
     this.isSharingScreen = true;
-    this.screenSharingButton.classList.add('enabled');
+    this.screenSharingButton.classList.add('selected');
     this.presentationElement.classList.add("active");
     this.presentationElement.classList.add("secondary");
     this.videoElement.classList.remove("secondary");
@@ -105,7 +105,7 @@ export class PexRtcWrapper {
 
   _screenshareStoppedHandler(reason) {
     this.isSharingScreen = false;
-    this.screenSharingButton.classList.remove('enabled');
+    this.screenSharingButton.classList.remove('selected');
     this.presentationElement.classList.remove("active");
     this.videoElement.classList.remove("secondary");
   }
@@ -123,9 +123,11 @@ export class PexRtcWrapper {
     this.pexrtc.onScreenshareStopped = (...args) => this._screenshareStoppedHandler(...args);
   }
 
-  makeCall() {
+  makeCall(localMediaStream) {
+    this.pexrtc.user_media_stream = localMediaStream;
     this.pexrtc.makeCall(
-      this.confNode, this.confName, this.displayName, this.bandwidth);
+      this.confNode, this.confName, this.displayName, this.bandwidth
+    );
     return this;
   }
 
