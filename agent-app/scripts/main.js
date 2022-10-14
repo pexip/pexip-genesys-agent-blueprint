@@ -46,13 +46,13 @@ var dragzone = $('#dragzone');
 // conPercent(); was here
 // Move conPercent here
 // This way we convert percent after the element is centered
-selfviewContainer.css('top', '16px');
-selfviewContainer.css('right', '16px');
+
 conPercent();
 
 $(selfviewContainer).draggable({
   containment: dragzone, scroll: false,
   stop: function () {
+    selfviewContainer.removeClass("upper-right-corner");
     conPercent();
     console.log(parseInt($(this).css("bottom")) / (dragzone.width() / 100) + "%");
     console.log(parseInt($(this).css("right")) / (dragzone.height() / 100) + "%");
