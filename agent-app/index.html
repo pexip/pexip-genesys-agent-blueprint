@@ -49,7 +49,7 @@
       </div>
 
       <div class="button-container">
-        <button id="settings-button" onclick="toggleButtonDialog()">
+        <button id="settings-button" onclick="toggleButtonDialog(this.closest('.button-container'))">
           <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
             data-token-name="IconPresentationOn_24" class="_small_x0ta1_20">
             <path
@@ -74,7 +74,7 @@
       </div>
 
       <div id="video-popout-button-container" class="button-container">
-        <button onclick="toggleVideoPopOut(this.closest('.button-container'))">
+        <button onclick="toggleVideoPopOut()">
           <svg viewBox="0 0 448 512" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
             data-token-name="IconPresentationOn_24" class="_small_x0ta1_20">
             <path
