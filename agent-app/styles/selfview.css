@@ -1,11 +1,16 @@
 #pexip-self-view-container {
     position: absolute;
-    width: 25%;
+    width: 20%;
     transform: rotateY(180deg);
-    min-width: 200px;
-    max-width: 300px;
-    cursor: pointer;  
+    min-width: max(200px,5%);
+    cursor: grabbing;  
 }
+
+#pexip-selfview {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    width: 100%; 
+} 
 
 .upper-right-corner{
     top: 16px;

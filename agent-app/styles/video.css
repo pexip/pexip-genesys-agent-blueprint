@@ -3,6 +3,9 @@ video {
     min-height: 0;
     max-width: 100%;
     pointer-events: none;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+    width: 100%;
 }
 
 video.secondary {
@@ -11,4 +14,5 @@ video.secondary {
     cursor: pointer;
     order: -1;
     pointer-events: initial;
+    min-height: 15%;
 }
