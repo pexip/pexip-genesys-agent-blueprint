@@ -39,12 +39,7 @@ document.getElementById(config.presentationElementId).onclick = togglePresentati
 var selfviewContainer = $('#pexip-self-view-container');
 var dragzone = $('#dragzone');
 
-// Init Container width / height
-//sizeUP();
-//$(window).resize(sizeUP);
-// conPercent(); was here
-// Move conPercent here
-// This way we convert percent after the element is centered
+
 
 conPercent();
 
