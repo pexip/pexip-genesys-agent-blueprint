@@ -4,6 +4,12 @@ import { PexRtcWrapper } from './pexrtc-wrapper.js';
 
 loadPexRtc(config.pexip.conferenceNode);
 
+
+//Video elements
+const videoElement = document.getElementById(config.videoElementId);
+const selfviewElement = document.getElementById(config.selfviewElementId);
+const videoPopoutButtonContainer = document.getElementById("video-popout-button-container");
+
 // Obtain a reference to the platformClient object
 const platformClient = require('platformClient');
 const client = platformClient.ApiClient.instance;
@@ -146,8 +152,7 @@ client.loginImplicitGrant(
     return conversationsApi.getConversation(conversationId);
   }).then((conversation) => {
 
-    const videoElement = document.getElementById(config.videoElementId);
-    const selfviewElement = document.getElementById(config.selfviewElementId);
+
     const presentationElement = document.getElementById(config.presentationElementId);
     const toolbar = document.getElementById('toolbar');
     const confNode = config.pexip.conferenceNode;
@@ -299,5 +304,19 @@ function toggleButtonDialog(buttonContainer) {
   buttonContainer.classList.toggle('selected');
 }
 
+//Popout feature for main video 
+function toggleVideoPopOut() {
+  if (document.pictureInPictureElement) {
+    document.exitPictureInPicture();
+  } else if (document.pictureInPictureEnabled) {
+    videoElement.requestPictureInPicture();
+    videoPopoutButtonContainer.classList.add('selected')
+  }
+}
+
+videoElement.hidden = !document.pictureInPictureEnabled || videoElement.disablePictureInPicture;
+videoElement.addEventListener('leavepictureinpicture', (event) => {videoPopoutButtonContainer.classList.remove('selected')});
+
 window.toggleScreenSharing = toggleScreenSharing
 window.toggleButtonDialog = toggleButtonDialog
+window.toggleVideoPopOut = toggleVideoPopOut
