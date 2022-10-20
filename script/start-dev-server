@@ -6,16 +6,22 @@ const path = require('path');
 
 const repoBase = path.dirname(__dirname)
 
+const rootApp = express();
 const agentApp = express();
 const customerApp = express();
+const wizardApp = express();
 
+rootApp.use(express.static(`${repoBase}`));
 agentApp.use(express.static(`${repoBase}/agent-app`));
-const agentAppServer = http.createServer(agentApp);
-
 customerApp.use(express.static(`${repoBase}/customer-app`));
-const customerAppServer = http.createServer(customerApp);
+wizardApp.use(express.static(`${repoBase}/wizard`));
 
-agentAppServer.listen(8080);
+const rootAppServer = http.createServer(rootApp);
+const agentAppServer = http.createServer(agentApp);
+const customerAppServer = http.createServer(customerApp);
+const wizardServer = http.createServer(customerApp);
+
+rootAppServer.listen(8080);
 console.log('Agent Test App running: http://localhost:8080');
 customerAppServer.listen(8081);
 console.log('Customer Test App running: http://localhost:8081');
