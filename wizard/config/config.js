@@ -10,12 +10,17 @@ export default {
     //redirectURLOnWizardCompleted: 'https://mypurecloud.github.io/purecloud-premium-app/premium-app-sample/index.html',
     redirectURLWithParams: true,
 
+    //Uninstall
+    //http://localhost:8080/wizard/index.html?environment=usw2.pure.cloud&langTag=en-us&uninstall=true
+
     // Genesys Cloud assigned name for the premium app
     // This should match the integration type name of the Premium App
     // NOTE: During initial development please use ‘premium-app-example’.
     //            Once your premium app is approved an integration type will be created
     //            by the Genesys Cloud product team and you can update the name at that time.
     // previously - defined as appName
+    
+   // premiumAppIntegrationTypeId: 'premium-app-example',
     premiumAppIntegrationTypeId: 'embedded-client-app-interaction-widget',
 
     // Optional - Some Premium Applications leverage both a premium app and a premium widget
@@ -100,7 +105,7 @@ export default {
 /*       'app-instance': [
         {
             'name': 'Pexip Premium Example App',
-            'url': 'hhtp://www.pexip.com',
+            'url': 'www.pexip.com',
             'type': 'standalone',
             'permissions': 'camera,display-capture',
             'groups': ['Supervisors']
