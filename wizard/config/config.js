@@ -19,9 +19,9 @@ export default {
     //            Once your premium app is approved an integration type will be created
     //            by the Genesys Cloud product team and you can update the name at that time.
     // previously - defined as appName
-    
-   // premiumAppIntegrationTypeId: 'premium-app-example',
-    premiumAppIntegrationTypeId: 'embedded-client-app-interaction-widget',
+
+     premiumAppIntegrationTypeId: 'premium-app-example',
+   // premiumAppIntegrationTypeId: 'embedded-client-app-interaction-widget',
 
     // Optional - Some Premium Applications leverage both a premium app and a premium widget
     premiumWidgetIntegrationTypeId: 'premium-widget-example',
