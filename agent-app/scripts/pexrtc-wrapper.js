@@ -10,6 +10,7 @@ export class PexRtcWrapper {
     this.displayName = displayName;
     this.pin = pin;
     this.bandwidth = parseInt(bandwidth);
+    this.locked = true;
 
     this.pexrtc = new PexRTC();
 
@@ -23,6 +24,15 @@ export class PexRtcWrapper {
     console.debug(`Video Element: ${this.videoElement}`);
     console.debug(`Video Element: ${this.selfviewElement}`);
     console.debug(`Bandwidth: ${this.bandwidth}`);
+  }
+
+  _updateLockRoomButtonContainer(locked) {
+    const container = document.getElementById('lock-room-button-container');
+    if (locked) {
+      container.classList.remove('selected');
+    } else {
+      container.classList.add('selected');
+    }
   }
 
   _hangupHandler(event) {
@@ -110,6 +120,11 @@ export class PexRtcWrapper {
     this.videoElement.classList.remove("secondary");
   }
 
+  _conferenceUpdatedHandler(properties) {
+    this.locked = properties.locked;
+    this._updateLockRoomButtonContainer(this.locked);
+  }
+
   attachEvents() {
     window.addEventListener('beforeunload', (...args) => this._hangupHandler(...args));
     this.pexrtc.onSetup = (...args) => this._setupHandler(...args);
@@ -121,6 +136,7 @@ export class PexRtcWrapper {
     this.pexrtc.onPresentationDisconnected = (...args) => this._presentationDisconnectedHandler(...args);
     this.pexrtc.onScreenshareConnected = (...args) => this._screenshareConnectedHandler(...args);
     this.pexrtc.onScreenshareStopped = (...args) => this._screenshareStoppedHandler(...args);
+    this.pexrtc.onConferenceUpdate = (...args) => this._conferenceUpdatedHandler(...args);
   }
 
   makeCall(localMediaStream) {
@@ -190,6 +206,10 @@ export class PexRtcWrapper {
       this.pexrtc.present('screen');
     }
     return this;
+  }
+  
+  toggleLockRoom() {
+    this.pexrtc.setConferenceLock(!this.locked);
   }
 
 }

@@ -300,6 +300,10 @@ function toggleScreenSharing(buttonContainer) {
   pexrtcWrapper.toggleScreenSharing(buttonContainer);
 }
 
+function toggleLockRoom(buttonContainer) {
+  pexrtcWrapper.toggleLockRoom(buttonContainer);
+}
+
 function toggleButtonDialog(buttonContainer) {
   buttonContainer.classList.toggle('selected');
 }
@@ -317,6 +321,7 @@ function toggleVideoPopOut() {
 videoElement.hidden = !document.pictureInPictureEnabled || videoElement.disablePictureInPicture;
 videoElement.addEventListener('leavepictureinpicture', (event) => {videoPopoutButtonContainer.classList.remove('selected')});
 
-window.toggleScreenSharing = toggleScreenSharing
-window.toggleButtonDialog = toggleButtonDialog
-window.toggleVideoPopOut = toggleVideoPopOut
+window.toggleScreenSharing = toggleScreenSharing;
+window.toggleLockRoom = toggleLockRoom;
+window.toggleButtonDialog = toggleButtonDialog;
+window.toggleVideoPopOut = toggleVideoPopOut;
