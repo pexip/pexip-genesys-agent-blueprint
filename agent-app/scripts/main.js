@@ -186,7 +186,7 @@ client.loginImplicitGrant(
         controller.addSubscription(
           `v2.users.${agent.id}.conversations.calls`,
           (callEvent) => {
-            let agentParticipant = callEvent?.eventBody?.participants?.filter((p) => p.purpose == "agent" && p.state == "connected")[0];
+            let agentParticipant = callEvent?.eventBody?.participants?.filter((p) => p.purpose == "agent")[0];
 
             //Disconnected event
             if (agentParticipant?.state === "disconnected") {
