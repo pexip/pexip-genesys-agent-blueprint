@@ -114,7 +114,7 @@ export default {
 
         'interaction-widget': [
             {
-                'name': 'Pexip Premium Example App',
+                'name': 'Pexip Premium Example App (Widget)',
                 'url': 'http://localhost:8080/agent-app/index.html?conversationid={{pcConversationId}}&pin=2021',
                 'sandbox': 'allow-scripts,allow-same-origin,allow-forms,allow-modals',
                 'permissions': 'camera,display-capture',
