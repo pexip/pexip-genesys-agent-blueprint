@@ -58,7 +58,7 @@ export default {
 
     // Enable the optional 'Step 2' in the provisoning process
     // If false, it will not show the page or the step in the wizard
-    enableCustomSetupPageBeforeInstall: false,
+    enableCustomSetupPageBeforeInstall: true,
     // Enable the optional Post Custom Setup module in the install process
     // If true, it will invoke the postCustomSetup module (configure method) after the Genesys Cloud ones (provisioningInfo).
     enableCustomSetupStepAfterInstall: false,
@@ -115,7 +115,7 @@ export default {
         'interaction-widget': [
             {
                 'name': 'Pexip Premium Example App (Widget)',
-                'url': 'http://localhost:8080/agent-app/index.html?conversationid={{pcConversationId}}&pin=2021',
+                'url': 'http://localhost:8080/agent-app/index.html?conversationid={{pcConversationId}}',
                 'sandbox': 'allow-scripts,allow-same-origin,allow-forms,allow-modals',
                 'permissions': 'camera,display-capture',
                 'groups': ['Supervisors'],
@@ -137,8 +137,6 @@ export default {
             }
         ],
 
-
-  
 
         
         'oauth-client': [

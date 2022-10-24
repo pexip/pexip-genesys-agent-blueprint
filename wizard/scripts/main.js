@@ -23,6 +23,10 @@ let state; // State from implicit grant
 let currentPage = null;
 let userMe = null;
 
+// Custom install
+var nodeValue;
+var pinValue;
+
 /**
  * Redirect to the actual premium app
  */
@@ -443,6 +447,8 @@ async function onInitialPageEnter() {
 }
 
 async function onInstallDetailsEnter() {
+  processCustomInput();
+  alert(nodeValue + " / " + pinValue);
   if (config.enableDynamicInstallSummary == true) {
     let messagesDiv = document.getElementById('messages');
     messagesDiv.innerHTML = '';
@@ -647,6 +653,17 @@ async function setup() {
   } catch (e) {
     console.error(e);
   }
+}
+
+function processCustomInput() {
+  let nodeInput = document.getElementById("node");
+  let pinInput = document.getElementById("pin");
+
+  nodeValue = nodeInput.value;
+  pinValue = pinInput.value;
+
+ config.provisioningInfo['interaction-widget'][0].url =  config.provisioningInfo['interaction-widget'][0].url  + "&pin=" + pinValue + "&node=" + nodeValue ; 
+
 }
 
 setup();

@@ -2,8 +2,6 @@ import controller from './notifications-controller.js';
 import config from './config.js';
 import { PexRtcWrapper } from './pexrtc-wrapper.js';
 
-loadPexRtc(config.pexip.conferenceNode);
-
 
 //Video elements
 const videoElement = document.getElementById(config.videoElementId);
@@ -26,11 +24,13 @@ let clientApp = new ClientApp({
 
 let conversationId = '';
 let pin = '';
+let node = '';
 let agent = null;
 
 const urlParams = new URLSearchParams(window.location.search);
 conversationId = urlParams.get('conversationid');
 pin = urlParams.get('pin');
+node = urlParams.get('node');
 
 const redirectUri = config.environment === 'development' ? config.developmentUri : config.prodUri;
 
@@ -137,7 +137,8 @@ client.loginImplicitGrant(
   {
     state: JSON.stringify({
       conversationId: conversationId,
-      pin: pin
+      pin: pin,
+      conferenceNode: node
     })
   }
 )
@@ -146,6 +147,16 @@ client.loginImplicitGrant(
     let stateData = JSON.parse(data.state);
     conversationId = stateData.conversationId;
     pin = stateData.pin;
+
+    if (stateData.conferenceNode) {
+      node = stateData.conferenceNode
+    }
+
+    else {
+      node = config.pexip.conferenceNode;
+    }
+    loadPexRtc(node);
+
     return usersApi.getUsersMe();
   }).then(currentUser => {
     agent = currentUser;
@@ -155,7 +166,7 @@ client.loginImplicitGrant(
 
     const presentationElement = document.getElementById(config.presentationElementId);
     const toolbar = document.getElementById('toolbar');
-    const confNode = config.pexip.conferenceNode;
+    const confNode = node;
     const displayName = `Agent: ${agent.name}`;
     const confAlias = conversation.participants?.filter((p) => p.purpose == "customer")[0]?.aniName;
 
@@ -175,8 +186,8 @@ client.loginImplicitGrant(
       displayName,
       pin
     );
-    
-    getLocalMediaStream().then( (localMediaStream) => {
+
+    getLocalMediaStream().then((localMediaStream) => {
       pexrtcWrapper.makeCall(localMediaStream);
     });
 
@@ -267,7 +278,7 @@ async function getVideoDevices() {
 async function getLocalMediaStream() {
   const videoDevices = await getVideoDevices();
   const selectedDeviceId = localStorage.getItem('settings.cameraDeviceId');
-  let device = videoDevices.find( (device) => device.deviceId === selectedDeviceId);
+  let device = videoDevices.find((device) => device.deviceId === selectedDeviceId);
   if (!device) {
     device = videoDevices[0];
   }
@@ -315,7 +326,7 @@ function toggleVideoPopOut() {
 }
 
 videoElement.hidden = !document.pictureInPictureEnabled || videoElement.disablePictureInPicture;
-videoElement.addEventListener('leavepictureinpicture', (event) => {videoPopoutButtonContainer.classList.remove('selected')});
+videoElement.addEventListener('leavepictureinpicture', (event) => { videoPopoutButtonContainer.classList.remove('selected') });
 
 window.toggleScreenSharing = toggleScreenSharing
 window.toggleButtonDialog = toggleButtonDialog
