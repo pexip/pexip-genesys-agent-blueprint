@@ -113,7 +113,7 @@ async function configure(logFunc, installedData, userId) {
 
         let integrationConfig = {
             body: {
-                name: config.prefix + instanceKey,
+                name: instanceKey,
                 version: 1,
                 properties: {
                     url: appInstanceInstall.url,

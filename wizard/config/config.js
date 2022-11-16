@@ -96,7 +96,7 @@ export default {
         ],
         'group': [
             {
-                'name': 'Supervisors',
+                'name': 'PexipAgents',
                 'description': 'Supervisors have the ability to watch a queue for ACD conversations.',
             }
         ],
@@ -118,7 +118,7 @@ export default {
                 'url': 'http://localhost:8080/agent-app/index.html?conversationid={{pcConversationId}}',
                 'sandbox': 'allow-scripts,allow-same-origin,allow-forms,allow-modals',
                 'permissions': 'camera,display-capture',
-                'groups': ['Supervisors'],
+                'groups': ['PexipAgents'],
                 'communicationTypeFilter': 'call',
                 'advanced':{
                     "lifecycle": {
@@ -177,7 +177,7 @@ export default {
         'audiohook': ['integrations:integration:view', 'integrations:integration:add', 'integrations:integration:edit'],
         'event-bridge': ['integrations:integration:view', 'integrations:integration:add', 'integrations:integration:edit']
     },
-    uninstallPermissions: {
+    installPermissions: {
         'custom': [],
         'wizard': [],
         'postCustomSetup': [],
