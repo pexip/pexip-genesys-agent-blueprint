@@ -21,6 +21,11 @@
     // Conference PIN. Must match the PIN number set by Pexip Infinity local policy for ad-hoc conference creation.
     let pexip_pin = "2021";
 
+    //@Sidi changes
+    let subdomain = "pexipdemo";
+	  let dn = "16504393338";
+    //-----------------------
+
     let init_test_session_btn = document.getElementById('btn-init-test-session');
     init_test_session_btn.onclick = () => {
       // Generates a random session UUID, customer name, and customer id, then opens a new Pexip video session.
@@ -31,7 +36,12 @@
         let sessionId = window.crypto.randomUUID().replaceAll("-", "");
         let customerName = person.name.first[0] + person.name.last.replaceAll(" ", "-");
         let customerId = `${person.name.last[0].toUpperCase()}${Math.floor(Math.random() * 100000000)}`;
-                let url = `${pexip_domain}/webapp/#/?conference=${pexip_conference_prefix}${sessionId}&name=${customerName}%20${customerId}&pin=${pexip_pin}`;
+
+        //@Sidi changes
+        let vmr = pexip_conference_prefix + subdomain + "_" + dn + "_" + sessionId;
+        let url = `${pexip_domain}/webapp/#/?conference=${vmr}&name=${customerName}%20${customerId}&pin=${pexip_pin}`;
+        //-------------------------
+
         console.log(url);
         sessionWindow.location = url;
       });
