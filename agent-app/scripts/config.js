@@ -34,6 +34,6 @@ export default {
 
         // External domain for Pexip Infinity Edge/Transcoding nodes.
         //conferenceNode: "pex-gcc.com",
-        conferenceNode: "https://pexipdemo.com",
+        conferenceNode: "pexipdemo.com",
     }
 }
