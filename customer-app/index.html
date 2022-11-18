@@ -22,9 +22,10 @@
     // Conference PIN. Must match the PIN number set by Pexip Infinity local policy for ad-hoc conference creation.
     let pexip_pin = "2021";
 
-    //@Sidi changes
-    let subdomain = "pexipdemo";
-	  let dn = "16504393338";
+    //customer and queue specific info for entry point
+    let domain = "pexipdemo.byoc.usw2.pure.cloud";
+    let dn = "16504393338";
+    let theme = "T001"
     //-----------------------
 
     let init_test_session_btn = document.getElementById('btn-init-test-session');
@@ -39,7 +40,7 @@
         let customerId = `${person.name.last[0].toUpperCase()}${Math.floor(Math.random() * 100000000)}`;
 
         //@Sidi changes
-        let vmr = pexip_conference_prefix + subdomain + "_" + dn + "_" + sessionId;
+        let vmr = pexip_conference_prefix + domain + "_" + dn + "_" + theme + "_" + sessionId;
         let url = `${pexip_domain}/webapp/#/?conference=${vmr}&name=${customerName}%20${customerId}&pin=${pexip_pin}`;
         //-------------------------
 
