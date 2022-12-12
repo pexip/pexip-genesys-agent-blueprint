@@ -26,6 +26,7 @@
     let domain = "pexipdemo.byoc.usw2.pure.cloud";
     let dn = "16504393338";
     let theme = "T001"
+    let playback = "0";
     //-----------------------
 
     let init_test_session_btn = document.getElementById('btn-init-test-session');
@@ -40,7 +41,7 @@
         let customerId = `${person.name.last[0].toUpperCase()}${Math.floor(Math.random() * 100000000)}`;
 
         //@Sidi changes
-        let vmr = pexip_conference_prefix + domain + "_" + dn + "_" + theme + "_" + sessionId;
+        let vmr = pexip_conference_prefix + domain + "_" + dn + "_" + theme + "_" + playback + "_" + sessionId;
         let url = `${pexip_domain}/webapp/#/?conference=${vmr}&name=${customerName}%20${customerId}&pin=${pexip_pin}`;
         //-------------------------
 
