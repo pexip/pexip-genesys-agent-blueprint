@@ -45,10 +45,9 @@ export default {
     // List available language assets - manage pcLangTag with possible formats like: en, en-US, en_US, en-CA, en_CA, ...
     // Values in lower case, using - or no separator
     availableLanguageAssets: {
-        'en-us': 'English',
-        'es': 'Español'
+        'en-us': 'English'    
     },
-    enableLanguageSelection: true,
+    enableLanguageSelection: false,
 
     // The names of the query parameters to check in 
     // determining language and environment
@@ -74,15 +73,15 @@ export default {
     enableUninstall: true,
 
     // To be added to names of Genesys Cloud objects created by the wizard
-    prefix: 'PEXIP_PREMIUM_EXAMPLE_',
+    prefix: 'PEXIP_VIDEO_CONNECT_',
 
     // These are the Genesys Cloud items that will be added and provisioned by the wizard
     // To see the sample configuration of all possible objects please consult
     // ./sample-provisioning-info.js on the same folder
     provisioningInfo: {
-        'role': [
+/*         'role': [
             {
-                'name': 'Role',
+                'name': 'PexipAgent',
                 'description': 'Generated role for access to the app.',
                 'permissionPolicies': [
                     {
@@ -93,11 +92,11 @@ export default {
                     }
                 ]
             }
-        ],
+        ], */
         'group': [
             {
-                'name': 'PexipAgents',
-                'description': 'Supervisors have the ability to watch a queue for ACD conversations.',
+                'name': 'PexipVideoConnect',
+                'description': 'Group for Pexip Video Connect',
             }
         ],
 
@@ -114,11 +113,11 @@ export default {
 
         'interaction-widget': [
             {
-                'name': 'Pexip Premium Example App (Widget)',
+                'name': 'Pexip Video Connect for Genesys',
                 'url': 'http://localhost:8080/agent-app/index.html?conversationid={{pcConversationId}}',
                 'sandbox': 'allow-scripts,allow-same-origin,allow-forms,allow-modals',
                 'permissions': 'camera,display-capture',
-                'groups': ['PexipAgents'],
+                'groups': ['PexipVideoConnect'],
                 'communicationTypeFilter': 'call',
                 'advanced':{
                     "lifecycle": {
@@ -139,19 +138,19 @@ export default {
 
 
         
-        'oauth-client': [
-            {
-                'name': 'OAuth Client',
-                'description': 'Generated Client that\'s passed to the App Backend',
-                'roles': ['Role'],
-                'authorizedGrantType': 'CLIENT_CREDENTIALS',
-                /** NOTE: 
-                 * If you want to learn how you can send the created credentials back to your system,
-                 * Please read about the Post Custom Setup module here:
-                 * https://developer.genesys.cloud/appfoundry/premium-app-wizard/7-custom-setup#post-custom-setup-module
-                 */
-            }
-        ],
+        // 'oauth-client': [
+        //     {
+        //         'name': 'OAuth Client',
+        //         'description': 'Generated Client that\'s passed to the App Backend',
+        //         'roles': ['Role'],
+        //         'authorizedGrantType': 'CLIENT_CREDENTIALS',
+        //         /** NOTE: 
+        //          * If you want to learn how you can send the created credentials back to your system,
+        //          * Please read about the Post Custom Setup module here:
+        //          * https://developer.genesys.cloud/appfoundry/premium-app-wizard/7-custom-setup#post-custom-setup-module
+        //          */
+        //     }
+        // ],
 
   
     },
@@ -159,15 +158,15 @@ export default {
     // These are the necessary permissions that the user running the wizard must have to install or uninstall
     // Add your permissions to one of the modules, to post custom setup, or custom
     installPermissions: {
-        'custom': [],
+ /*        'custom': [], */
         'wizard': ['integrations:integration:view', 'integrations:integration:edit'],
-        'postCustomSetup': [],
-        'role': ['authorization:role:view', 'authorization:role:add', 'authorization:grant:add'],
+/*         'postCustomSetup': [], */
+/*         'role': ['authorization:role:view', 'authorization:role:add', 'authorization:grant:add'], */
         'group': ['directory:group:add'],
-        'app-instance': ['integrations:integration:view', 'integrations:integration:add', 'integrations:integration:edit'],
-        'widget-instance': ['integrations:integration:view', 'integrations:integration:add', 'integrations:integration:edit'],
+/*         'app-instance': ['integrations:integration:view', 'integrations:integration:add', 'integrations:integration:edit'], */
+/*         'widget-instance': ['integrations:integration:view', 'integrations:integration:add', 'integrations:integration:edit'], */
         'interaction-widget': ['integrations:integration:view', 'integrations:integration:add', 'integrations:integration:edit'],
-        'oauth-client': ['authorization:role:view', 'oauth:client:view', 'oauth:client:add', 'oauth:client:edit'],
+/*         'oauth-client': ['authorization:role:view', 'oauth:client:view', 'oauth:client:add', 'oauth:client:edit'],
         'widget-deployment': ['widgets:deployment:view', 'widgets:deployment:add', 'widgets:deployment:edit'],
         'open-messaging': ['messaging:integration:view', 'messaging:integration:add', 'messaging:integration:edit'],
         'ws-data-actions': ['integrations:integration:view', 'integrations:integration:add', 'integrations:integration:edit', 'integrations:action:add', 'integrations:action:edit'],
@@ -175,31 +174,12 @@ export default {
         'data-table': ['architect:datatable:view', 'architect:datatable:add'],
         'byoc-cloud-trunk': ['telephony:plugin:all'],
         'audiohook': ['integrations:integration:view', 'integrations:integration:add', 'integrations:integration:edit'],
-        'event-bridge': ['integrations:integration:view', 'integrations:integration:add', 'integrations:integration:edit']
-    },
-    installPermissions: {
-        'custom': [],
-        'wizard': [],
-        'postCustomSetup': [],
-        'role': ['authorization:role:delete'],
-        'group': ['directory:group:delete'],
-        'app-instance': ['integrations:integration:delete'],
-        'widget-instance': ['integrations:integration:delete'],
-        'interaction-widget': ['integrations:integration:delete'],
-        'oauth-client': ['oauth:client:edit', 'oauth:client:delete'],
-        'widget-deployment': ['widgets:deployment:delete'],
-        'open-messaging': ['messaging:integration:delete'],
-        'ws-data-actions': ['integrations:integration:delete'],
-        'gc-data-actions': ['integrations:integration:delete'],
-        'data-table': ['architect:datatable:delete'],
-        'byoc-cloud-trunk': ['telephony:plugin:all'],
-        'audiohook': ['integrations:integration:delete'],
-        'event-bridge': ['integrations:integration:delete']
+        'event-bridge': ['integrations:integration:view', 'integrations:integration:add', 'integrations:integration:edit'] */
     },
 
     // These are the necessary scopes that the Vendor Wizard's OAuth Client (defined in Vendor's org) must have to allow the wizard to install or uninstall
     // This is for information only, to make it easier to find what the Vendor Wizard's OAuth Client (Implicit Grant type, Authorization Code Grant type) needs to be set with 
-    installScopes: {
+/*     installScopes: {
         'custom': [],
         'wizard': ['user-basic-info', 'integrations'],
         'postCustomSetup': [],
@@ -217,17 +197,17 @@ export default {
         'byoc-cloud-trunk': ['telephony', 'organization:readonly'],
         'audiohook': ['integrations'],
         'event-bridge': ['integrations']
-    },
+    }, */
     uninstallScopes: {
-        'custom': [],
+/*          'custom': [], */
         'wizard': [],
-        'postCustomSetup': [],
-        'role': ['authorization'],
+/*         'postCustomSetup': [],  */
+/*         'role': ['authorization'], */
         'group': ['groups'],
-        'app-instance': ['integrations'],
-        'widget-instance': ['integrations'],
+/*         'app-instance': ['integrations'],
+        'widget-instance': ['integrations'], */
         'interaction-widget': ['integrations'],
-        'oauth-client': ['oauth'],
+ /*        'oauth-client': ['oauth'],
         'widget-deployment': ['widgets'],
         'open-messaging': ['messaging'],
         'ws-data-actions': ['integrations'],
@@ -235,6 +215,6 @@ export default {
         'data-table': ['architect'],
         'byoc-cloud-trunk': ['telephony'],
         'audiohook': ['integrations'],
-        'event-bridge': ['integrations']
+        'event-bridge': ['integrations'] */
     },
 }

@@ -17,130 +17,158 @@
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
 
-<!--   Custom -->
+  <!--   Custom -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
-  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
+    integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+
   <style>
-    html, body {
-    display: flex;
-    justify-content: center;
-    height: 100%;
+    html,
+    body {
+      display: flex;
+      justify-content: center;
+      height: 100%;
     }
-    body, div, h1, form, input, p { 
-    padding: 0;
-    margin: 0;
-    outline: none;
-    font-family: Roboto, Arial, sans-serif;
-    font-size: 16px;
-    color: #666;
-    }
-    h1 {
-    padding: 10px 0;
-    font-size: 32px;
-    font-weight: 300;
-    text-align: center;
-    }
+
+    body,
+    div,
+    h1,
+    form,
+    input,
     p {
-    font-size: 12px;
+      padding: 0;
+      margin: 0;
+      outline: none;
+      font-family: Roboto, Arial, sans-serif;
+      font-size: 16px;
+      color: #666;
     }
+
+    h1 {
+      padding: 10px 0;
+      font-size: 32px;
+      font-weight: 300;
+      text-align: center;
+    }
+
+    p {
+      font-size: 12px;
+    }
+
     hr {
-    color: #a9a9a9;
-    opacity: 0.3;
+      color: #a9a9a9;
+      opacity: 0.3;
     }
+
     .main-block {
-    padding: 25px;
-    margin-bottom: 25px;
-    border-radius: 5px; 
-    box-shadow: 1px 2px 5px rgba(0,0,0,.31); 
-    background: #ebebeb; 
+      padding: 25px;
+      margin-bottom: 25px;
+      border-radius: 5px;
+      box-shadow: 1px 2px 5px rgba(0, 0, 0, .31);
+      background: #ebebeb;
     }
+
     form {
-    margin: 0 30px;
+      margin: 0 30px;
     }
-    .account-type, .gender {
-    margin: 15px 0;
+
+    .account-type,
+    .gender {
+      margin: 15px 0;
     }
+
     input[type=radio] {
-    display: none;
+      display: none;
     }
+
     label#icon {
-    margin: 0;
-    border-radius: 5px 0 0 5px;
+      margin: 0;
+      border-radius: 5px 0 0 5px;
     }
+
     label.radio {
-    position: relative;
-    display: inline-block;
-    padding-top: 4px;
-    margin-right: 20px;
-    text-indent: 30px;
-    overflow: visible;
-    cursor: pointer;
+      position: relative;
+      display: inline-block;
+      padding-top: 4px;
+      margin-right: 20px;
+      text-indent: 30px;
+      overflow: visible;
+      cursor: pointer;
     }
+
     label.radio:before {
-    content: "";
-    position: absolute;
-    top: 2px;
-    left: 0;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #1c87c9;
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #1c87c9;
     }
+
     label.radio:after {
-    content: "";
-    position: absolute;
-    width: 9px;
-    height: 4px;
-    top: 8px;
-    left: 4px;
-    border: 3px solid #fff;
-    border-top: none;
-    border-right: none;
-    transform: rotate(-45deg);
-    opacity: 0;
+      content: "";
+      position: absolute;
+      width: 9px;
+      height: 4px;
+      top: 8px;
+      left: 4px;
+      border: 3px solid #fff;
+      border-top: none;
+      border-right: none;
+      transform: rotate(-45deg);
+      opacity: 0;
     }
-    input[type=radio]:checked + label:after {
-    opacity: 1;
+
+    input[type=radio]:checked+label:after {
+      opacity: 1;
     }
-    input[type=text], input[type=password] {
-    width: calc(100% - 57px);
-    height: 36px;
-    margin: 13px 0 0 -5px;
-    padding-left: 10px; 
-    border-radius: 0 5px 5px 0;
-    border: solid 1px #cbc9c9; 
-    box-shadow: 1px 2px 5px rgba(0,0,0,.09); 
-    background: #fff; 
-    }
+
+    input[type=text],
     input[type=password] {
-    margin-bottom: 15px;
+      width: calc(100% - 57px);
+      height: 36px;
+      margin: 13px 0 0 -5px;
+      padding-left: 10px;
+      border-radius: 0 5px 5px 0;
+      border: solid 1px #cbc9c9;
+      box-shadow: 1px 2px 5px rgba(0, 0, 0, .09);
+      background: #fff;
     }
+
+    input[type=password] {
+      margin-bottom: 15px;
+    }
+
     #icon {
-    display: inline-block;
-    padding: 9.3px 15px;
-    box-shadow: 1px 2px 5px rgba(0,0,0,.09); 
-    background: #1c87c9;
-    color: #fff;
-    text-align: center;
+      display: inline-block;
+      padding: 9.3px 15px;
+      box-shadow: 1px 2px 5px rgba(0, 0, 0, .09);
+      background: #0A2136;
+      color: #fff;
+      text-align: center;
     }
+
     .btn-block {
-    margin-top: 10px;
-    text-align: center;
+      margin-top: 10px;
+      text-align: center;
     }
+
     button {
-    width: 100%;
-    padding: 10px 0;
-    margin: 10px auto;
-    border-radius: 5px; 
-    border: none;
-    background: #1c87c9; 
-    font-size: 14px;
-    font-weight: 600;
-    color: #fff;
+      width: 100%;
+      padding: 10px 0;
+      margin: 10px auto;
+      border-radius: 5px;
+      border: none;
+      background: #0A2136;
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
     }
+
     button:hover {
-    background: #26a9e0;
+      background: #1e3a54;
     }
   </style>
 </head>
@@ -164,15 +192,7 @@
   <div class="content">
     <!-- MAIN CONTENT -->
     <main>
-      <div class="title">
-        <span class="txt-greeting">
-          Hi
-        </span>
-        <span id="username"></span>!
-        <div class="txt-greeting-2">
-          welcome to the Premium App Example
-        </div>
-      </div>
+      <img id="footer-logo" class="logo" src="./assets/img/pexip_logo.svg" w alt="Logo" width="30%">
       <!-- NAVIGATION INDICATORS -->
       <div class="steps-container">
         <ul class="steps">
@@ -194,70 +214,72 @@
           </li>
         </ul>
       </div>
-
+      <div class="title">
+        <span class="txt-greeting">
+          Hi
+        </span>
+        <span id="username"></span>!
+        <br>
+        <div class="txt-greeting-2">
+          <p>Welcome to Pexip Video Connect for Genesys</p>
+        </div>
+      </div>
       <!-- ===========================   HOME PAGE   ======================================== -->
       <div id="index-page">
-        <div id="available">
-          <p class="success">
-            <i class="fas fa-check-circle enlarge"></i>
-          <div class="txt-product-available">Product Available </div>
-          </p>
-          <p class="reminders">
-          <p class="txt-available-message">Reminders:</p>
-          <ul class="reminder-list">
-            <li>Remove the Unistall button in your application</li>
-            <li>You may redirect to your application or to your web site by updating the redirectURLOnWizardCompleted
-              in
-              the /wizard/config/config.js file</li>
-          </ul>
-          </p>
+        <div class="reminder">
+          <div class="reminder-list">
+            <p>Please make sure that you have all necessary</p>
+            <p>information about your dedicated Pexip</p>
+            <p>Infinity video plattform available in order to</p>
+            <p>complete the setup steps</p>
+            <br>
+            <p>Need help? Contact <a href="support@pexip.com">support@pexip.com</a></p>
+            <br>
+          </div>
           <button class="btn-next" class="btn-info right">
-            <span class="txt-start">Start</span> <i class="button-icon fas fa-chevron-right"></i></button>
+            <span class="txt-start">Start</span>
+          </button>
         </div>
       </div>
       <!-- ===========================   CUSTOM SETUP PAGE   ======================================== -->
       <!-- This is where you can put custom fields or custom functionality for your wizard -->
       <div id="custom-setup-page">
-
-        <div class="main-block">
-          <h1>Infinity Configuration</h1>
-          <form action="/">
-            <hr>
-    
-    
-            <label id="icon" for="node"><i class="fas fa-server"></i></label>
-            <input type="text" name="node" id="node" placeholder="Node" required/>
-            <label id="icon" for="pin"><i class="fas fa-lock"></i></label>
-            <input type="text" name="pin" id="pin" placeholder="PIN" required/>
-    
-        
-            <hr>
-            <div class="btn-block">
-              <p>Pexip.com <a href="https://pexip.com">Pexip.com</a>.</p>
-            </div>
-          </form>
+        <div class="message-container">
+          <div class="message">
+            <h1>Infinity Configuration</h1>
+            <form action="/">
+              <label id="icon" for="node"><i class="fas fa-server"></i></label>
+              <input type="text" name="node" id="node" placeholder="Node" required />
+              <label id="icon" for="pin"><i class="fas fa-lock"></i></label>
+              <input type="text" name="pin" id="pin" placeholder="Access token
+            " required />
+              <div class="btn-block">
+                <p>Pexip.com <a href="https://pexip.com">Pexip.com</a>.</p>
+              </div>
+            </form>
+          </div>
         </div>
         <!-- Don't remove buttons below -->
-        <button class="btn-prev">
-          <i class="button-icon fas fa-chevron-left"> </i> <span class="txt-back">Back</span>
-        </button>
-        <button class="btn-next" class="btn-info right">
-          <span class="txt-next">Next</span> <i class="button-icon fas fa-chevron-right"></i>
-        </button>
+        <div>
+          <button class="btn-prev">
+            <span class="txt-back">Back</span>
+          </button>
+          <button class="btn-next" class="btn-info right">
+            <span class="txt-next">Next</span>
+          </button>
+        </div>
       </div>
       <!-- =================----====  INSTALLATION DETAILS PAGE   =========================== -->
       <div id="install-details-page">
         <p>
-          <span class="txt-install-summary">These are the steps that will be automatically performed for
-            you!</span>
+          <span class="txt-install-summary">These are the steps that will be automatically performed</span>
         </p>
-
+        <br>
         <div class="message-container">
           <div id="messages" class="messages">
             <div class="message">
               <div class="message-title">
                 <span>1. </span><span class="txt-create-role">Create Role</span>
-                <hr>
               </div>
               <div class="message-content">
                 <div>
@@ -271,7 +293,6 @@
             <div class="message">
               <div class="message-title">
                 <span>2. </span><span class="txt-create-group">Create Groups</span>
-                <hr>
               </div>
               <div class="message-content">
                 <div>
@@ -286,7 +307,6 @@
               <div class="message-title">
                 <span>3. </span><span class="txt-create-app-instance">Create instances</span>
               </div>
-              <hr>
               <div class="message-content">
                 <div>
                   <span class="txt-create-app-instance-msg">
@@ -296,32 +316,16 @@
                 </div>
               </div>
             </div>
-
-            <div class="message">
-              <div class="message-title">
-                <span>4. </span><span class="txt-create-oauth-client">Create OAuth Client</span>
-              </div>
-              <hr>
-              <div class="message-content">
-                <div>
-                  <span class="txt-create-oauth-client-msg">
-                    An optional OAuth Client could be created for server-to-server communication. After
-                    creation, it should be followed by a method that will pass the OAuth Client information
-                    to the app's server.
-                  </span>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
-        <p class="sink-more">
+        <!--        <p class="sink-more">
           <span class="txt-please-click">
             Please click the button to start the installation.
           </span>
-        </p>
+        </p> -->
 
         <button class="btn-prev">
-          <i class="button-icon fas fa-chevron-left"></i> <span class="txt-back">Back</span>
+          <span class="txt-back">Back</span>
         </button>
         <button id="btn-install">
           <span class="txt-install">Install</span>
@@ -364,10 +368,10 @@
     </main>
   </div>
 
-  <footer>
+  <!--   <footer>
     <img id="footer-logo" src="./assets/img/logo-footer.png" alt="Logo">
   </footer>
-
+ -->
   <!-- MODAL-->
   <div id="loading-modal">
     <div class="overlay"></div>

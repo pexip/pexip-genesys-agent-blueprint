@@ -67,7 +67,7 @@
 
 .step:after {
     width: 0;
-    background-color: #3B90AA;
+    background-color: #0A2136;
 }
 
 .step--complete:after {
@@ -93,7 +93,7 @@
 
 .step__icon:before {
     display: block;
-    color: #fff;
+    color: #888;
     content: '\2713';
     font-size: 20px;
 }
@@ -120,19 +120,19 @@
 }
 
 .step--complete.step--active .step__icon {
-    color: #fff;
+    color: #888;
     transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
 .step--incomplete.step--active .step__icon {
-    border-color: #3B90AA;
+    border-color: #0A2136;
     transition-delay: 0.5s;
 }
 
 .step--complete .step__icon {
     animation: bounce 0.5s ease-in-out;
-    background-color: #3B90AA;
-    border-color: #3B90AA;
+    background-color: #fff;
+    border-color: #0A2136;
     color: #fff;
 }
 

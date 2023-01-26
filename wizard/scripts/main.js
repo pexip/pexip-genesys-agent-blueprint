@@ -448,7 +448,6 @@ async function onInitialPageEnter() {
 
 async function onInstallDetailsEnter() {
   processCustomInput();
-  alert(nodeValue + " / " + pinValue);
   if (config.enableDynamicInstallSummary == true) {
     let messagesDiv = document.getElementById('messages');
     messagesDiv.innerHTML = '';
@@ -465,7 +464,7 @@ async function onInstallDetailsEnter() {
 
       let messageTitle = document.createElement("div");
       messageTitle.className = "message-title";
-      messageTitle.innerHTML = "<span>" + moduleIndex.toString() + ". </span><span class='txt-create-" + modKey + "'></span><hr>";
+      messageTitle.innerHTML = "<span>" + moduleIndex.toString() + ". </span><span class='txt-create-" + modKey + "'></span>";
       messageDiv.appendChild(messageTitle);
 
       let messageContent = document.createElement("div");
@@ -544,7 +543,9 @@ async function onInstallationSummaryEnter() {
     const template = `
       <div id="installation-summary-${dataKeys[i]}" class="install-summary-category">
         <h3>${beautifyModuleKey(category)}</h3>
+        <br>
         ${childElemsString}
+        <br>
       </div>
     `
 
