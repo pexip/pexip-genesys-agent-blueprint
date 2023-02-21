@@ -42,7 +42,7 @@
 
         //@Sidi changes
         let vmr = pexip_conference_prefix + domain + "_" + dn + "_" + theme + "_" + playback + "_" + sessionId;
-        let url = `${pexip_domain}/webapp/#/?conference=${vmr}&name=${customerName}%20${customerId}&pin=${pexip_pin}`;
+        let url = `${pexip_domain}/webapp/m/${vmr}/step-by-step?name=${customerName}%20${customerId}&role=guest`;
         //-------------------------
 
         console.log(url);
