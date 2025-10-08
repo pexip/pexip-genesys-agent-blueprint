@@ -1,5 +1,12 @@
 export class PexRtcWrapper {
-  constructor(videoElement, confNode, confName, displayName, pin, bandwidth = "1264") {
+  constructor(
+    videoElement,
+    confNode,
+    confName,
+    displayName,
+    pin,
+    bandwidth = "1264"
+  ) {
     this.videoElement = videoElement;
     this.confNode = confNode;
     this.confName = confName;
@@ -26,27 +33,30 @@ export class PexRtcWrapper {
   }
 
   _errorHandler(err) {
-      console.error({err});
+    console.error({ err });
   }
 
   _connectHandler(videoUrl) {
     this.videoElement.poster = "";
-    if (typeof(MediaStream) !== "undefined" && videoUrl instanceof MediaStream) {
-        this.videoElement.srcObject = videoUrl;
-    }
-    else {
-        this.videoElement.src = videoUrl;
+    if (typeof MediaStream !== "undefined" && videoUrl instanceof MediaStream) {
+      this.videoElement.srcObject = videoUrl;
+    } else {
+      this.videoElement.src = videoUrl;
     }
   }
 
   _disconnectHandler(reason) {
-    console.debug({reason});
-    window.removeEventListener('beforeunload', (...args) => this._hangupHandler(...args));
+    console.debug({ reason });
+    window.removeEventListener("beforeunload", (...args) =>
+      this._hangupHandler(...args)
+    );
     window.close();
   }
 
   attachEvents() {
-    window.addEventListener('beforeunload', (...args) => this._hangupHandler(...args));
+    window.addEventListener("beforeunload", (...args) =>
+      this._hangupHandler(...args)
+    );
     this.pexrtc.onSetup = (...args) => this._setupHandler(...args);
     this.pexrtc.onError = (...args) => this._errorHandler(...args);
     this.pexrtc.onConnect = (...args) => this._connectHandler(...args);
@@ -55,7 +65,16 @@ export class PexRtcWrapper {
 
   makeCall() {
     this.pexrtc.makeCall(
-      this.confNode, this.confName, this.displayName, this.bandwidth);
+      this.confNode,
+      this.confName,
+      this.displayName,
+      this.bandwidth
+    );
+    return this;
+  }
+
+  muteVideo(state = true) {
+    this.pexrtc.muteVideo(state);
     return this;
   }
 
