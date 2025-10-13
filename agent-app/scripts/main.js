@@ -1,6 +1,6 @@
 import controller from "./notifications-controller.js";
-import config from "./config.js?_=20251008T175446";
-import { PexRtcWrapper } from "./pexrtc-wrapper.js?_=20251008T175446";
+import config from "./config.js";
+import { PexRtcWrapper } from "./pexrtc-wrapper.js";
 
 // Obtain a reference to the platformClient object
 const platformClient = require("platformClient");
@@ -64,8 +64,9 @@ client
     )[0]?.aniName;
 
     let initAgent = conversation.participants?.filter(
-      (p) => p.purpose == "agent"
+      (p) => p.userId == agent.id
     )[0];
+    console.log(`PEX: initAgent: `, initAgent);
     let agentIsConnected = initAgent?.calls[0].state === "connected";
     console.log(`PEX: agentIsConnected: ${agentIsConnected}`);
 
@@ -82,6 +83,7 @@ client
     );
 
     let startVideo = () => {
+      console.log(`PEX: Starting video... ${pexrtcWrapper.displayName}`);
       pexrtcWrapper.makeCall().muteAudio();
     };
 
@@ -91,40 +93,76 @@ client
         return controller.addSubscription(
           `v2.users.${agent.id}.conversations.calls`,
           (callEvent) => {
-            const disconnectStates = ["disconnected", "terminated"];
-            let agentParticipant = callEvent?.eventBody?.participants?.filter(
-              (p) => p.purpose == "agent"
-            )[0];
+            let activeAgentParticipants =
+              callEvent?.eventBody?.participants?.filter(
+                (p) => p.user?.id === agent.id && p.state === "connected"
+              );
+            // Sort in reverse chronological order in order to pull the latest
+            if (activeAgentParticipants.length > 1) {
+              activeAgentParticipants.sort((a, b) => a.endTime > b.endTime);
+            }
+            console.log(
+              `PEX: activeAgentParticipants: ${JSON.stringify(
+                activeAgentParticipants
+              )}`
+            );
+
+            let inactiveAgentParticipants =
+              callEvent?.eventBody?.participants?.filter(
+                (p) => p.user?.id === agent.id && p.state === "disconnected"
+              );
+            // Sort in reverse chronological order in order to pull the latest
+            if (inactiveAgentParticipants.length > 1) {
+              inactiveAgentParticipants.sort((a, b) => a.endTime > b.endTime);
+            }
+            console.log(
+              `PEX: inactiveAgentParticipants: ${JSON.stringify(
+                inactiveAgentParticipants
+              )}`
+            );
 
             if (
               agentIsConnected !== true &&
-              agentParticipant.state === "connected"
+              activeAgentParticipants.length > 0 &&
+              activeAgentParticipants[0].state === "connected"
             ) {
               agentIsConnected = true;
               startVideo();
             }
 
-            if (
-              disconnectStates.includes(agentParticipant.state) &&
-              agentParticipant.disconnectType === "transfer"
-            ) {
-              console.log(
-                "Agent is transferring the call. Only disconnecting the agent."
-              );
-              pexrtcWrapper.pexrtc.disconnect();
-            } else if (disconnectStates.includes(agentParticipant.state)) {
-              console.log(
-                "Agent has ended the call. Disconnecting all conference participants"
-              );
-              pexrtcWrapper.disconnectAll();
-            }
-
-            let mute_state = agentParticipant?.held || false;
+            let mute_state = activeAgentParticipants[0]?.held || false;
             pexrtcWrapper.muteVideo(mute_state);
             if (mute_state === true) {
               videoElement.style["display"] = "none";
             } else {
               videoElement.style["display"] = null;
+            }
+
+            if (
+              activeAgentParticipants.length === 0 &&
+              inactiveAgentParticipants.length > 0 &&
+              inactiveAgentParticipants[0]?.disconnectType === "transfer"
+            ) {
+              console.log(
+                `PEX: Agent is transferring the call. Only disconnecting the current agent: ${pexrtcWrapper.displayName}.`
+              );
+              pexrtcWrapper.disconnect();
+            } else if (
+              activeAgentParticipants.length === 0 &&
+              inactiveAgentParticipants.length > 0 &&
+              inactiveAgentParticipants[0]?.disconnectType === "client"
+            ) {
+              if (agentIsConnected === true) {
+                console.log(
+                  "PEX: Agent has ended the call. Disconnecting all conference participants."
+                );
+                pexrtcWrapper.disconnectAll();
+              } else {
+                console.log(
+                  `PEX: Agent has declined the call. Only disconnecting the current agent: ${pexrtcWrapper.displayName}.`
+                );
+                pexrtcWrapper.disconnect();
+              }
             }
           }
         );
@@ -135,7 +173,7 @@ client
 
     clientApp.lifecycle.addStopListener(() => {
       console.log("Application is closing. Cleaning up resources.");
-      pexrtcWrapper.disconnectAll();
+      pexrtcWrapper.disconnect();
     }, true);
 
     return pexrtcWrapper;

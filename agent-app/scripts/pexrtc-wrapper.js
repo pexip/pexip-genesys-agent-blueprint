@@ -23,6 +23,7 @@ export class PexRtcWrapper {
   }
 
   _hangupHandler(event) {
+    console.log(`PEX: In _hangupHandler ${this.displayName}`);
     this.pexrtc.disconnect();
     this.videoElement.src = "";
   }
@@ -45,18 +46,20 @@ export class PexRtcWrapper {
     }
   }
 
+  _beforeunloadHandler(...args) {
+    this.pexrtc.disconnect();
+    this._hangupHandler(...args);
+  }
+
   _disconnectHandler(reason) {
     console.debug({ reason });
-    window.removeEventListener("beforeunload", (...args) =>
-      this._hangupHandler(...args)
-    );
+    console.log(`PEX: In _disconnectHandler ${this.displayName}`);
+    window.removeEventListener("beforeunload", this._beforeunloadHandler);
     window.close();
   }
 
   attachEvents() {
-    window.addEventListener("beforeunload", (...args) =>
-      this._hangupHandler(...args)
-    );
+    window.addEventListener("beforeunload", this._beforeunloadHandler);
     this.pexrtc.onSetup = (...args) => this._setupHandler(...args);
     this.pexrtc.onError = (...args) => this._errorHandler(...args);
     this.pexrtc.onConnect = (...args) => this._connectHandler(...args);
@@ -80,6 +83,12 @@ export class PexRtcWrapper {
 
   muteAudio() {
     this.pexrtc.muteAudio(true);
+    return this;
+  }
+
+  disconnect() {
+    console.log(`PEX: Disconnecting ${this.displayName}`);
+    this.pexrtc.disconnect();
     return this;
   }
 
